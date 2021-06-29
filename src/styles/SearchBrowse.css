@@ -1,0 +1,6 @@
+.browseList{
+  display: block;
+}
+.browseList.invisible {
+  display: none;
+}

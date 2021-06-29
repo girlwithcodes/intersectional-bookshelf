@@ -1,0 +1,15 @@
+#nav-bar {
+  background-color: rgb(193, 245, 237);
+  padding: 1vh 0;
+}
+#nav-link-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav-link-list li {
+  margin: 0 2vw;
+}
