@@ -17,9 +17,9 @@ function App() {
   useEffect(()=> {
     //function to fetch book data from Airtable
     const fetchBooks = async() => {
+      const url = `${baseURL}/books`;
       //save data
-      const resp = await axios.get(baseURL, config);
-      console.log(resp);
+      const resp = await axios.get(url, config);
       setBookList(resp.data.records);
     }
     fetchBooks();
