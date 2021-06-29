@@ -10,10 +10,20 @@ The intersectional bookshelf is a book recommendation app where users can search
 
 ## Wireframes
 
-
+![Desktop Home Wirefreame](./project-images/desktop-home-wireframe.png "Desktop Home Wireframe")
+![Mobile Home Wirefreame](./project-images/mobile-home-wireframe.png "Mobile Home Wireframe")
+![Desktop Browse/Search Wirefreame](./project-images/desktop-browse-search-wireframe.png "Desktop Browse/Search Wireframe")
+![Mobile Browse/Search Wirefreame](./project-images/mobile-search-browse-wireframe.png "Mobile Browse/Search Wireframe")
+![Desktop Search Results Wirefreame](./project-images/desktop-search-results-wireframe.png "Desktop Search Results Wireframe")
+![Mobile Search Results Wirefreame](./project-images/mobile-search-results-wireframe.png "Mobile Search Results Wireframe")
+![Desktop Book Wirefreame](./project-images/desktop-book-wireframe.png "Desktop Book Wireframe")
+![Mobile Book Wirefreame](./project-images/mobile-book-wireframe.png "Mobile Book Wireframe")
+![Desktop Add Recommendation Wirefreame](./project-images/desktop-add-rec-wireframe.png "Desktop Add Recommendation Wireframe")
+![Mobile Add Recommendation Wirefreame](./project-images/mobile-add-rec-wireframe.png "Mobile Add Recommendation Wireframe")
 
 ## Component Hierarchy
-Show your component hierarchy here! Use [this](https://cms-assets.tutsplus.com/uploads/users/1795/posts/30352/image/GettingStartedWithReduxTutorial-React-Component-Structure.png) as an example.
+![Component Hierarchy](./project-images/component-hierarchy.png "Component Hierarchy")
+
 
 ## API and Data Sample
 
