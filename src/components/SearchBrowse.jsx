@@ -5,18 +5,24 @@ import { baseURL, config } from '../services';
 import '../styles/SearchBrowse.css';
 
 function SearchBrowse(props) {
+  //declare stateful variables to hold browsable subjects 
+  //(user can browse by genre, repTag, or authorTag)
   const [genres, setGenres] = useState([]);
   const [repTags, setTags] = useState([]);
   const [authorTags, setAuthorTags] = useState([]);
 
+  //declare stateful variabls to hold seach terms for each searchable subject
   const [genreSearchTerms, setGenreSearchTerms] = useState([]);
   const [repTagSearchTerms, setRepTagSearchTerms] = useState([]);
   const [authorTagSearchTerms, setAuthorTagSearchTerms] = useState([]);
 
+  //variables to hold classNames for browsable lists, for the purposes of
+  //toggling list visibility
   const [genreListClass, setGenreListClass] = useState("browseList invisible");
   const [repTagListClass, setRepTagListClass] = useState("browseList invisible");
   const [authorTagListClass, setAuthorTagListClass] = useState("browseList invisible");
 
+  //useEffect to get lists of genres, repTags, and authorTags for respective tables
   useEffect(() => {
     const fetchGenres = async() => {
       const url=`${baseURL}/genres`;
@@ -26,43 +32,61 @@ function SearchBrowse(props) {
     fetchGenres();
   }, []);
 
+  //function to toggle visibilty On visibilty of Genre List
   const displayGenreList = () => {
     setGenreListClass("browseList");
     setRepTagListClass("browseList invisible");
     setAuthorTagListClass("browseList invisible");
   }
 
+  //function to toggle visibilty On visibilty of repTag List
   const displayRepTagList = () => {
     setRepTagListClass("browseList");
     setGenreListClass("browseList invisible");
     setAuthorTagListClass("browseList invisible");
   }
 
+  //function to toggle visibilty On visibilty of authorTag List
   const displayAuthorTagList = () => {
     setAuthorTagListClass("browseList");
     setGenreListClass("browseList invisible");
     setRepTagListClass("browseList invisible");
   }
 
-  const createGenreList = (filterTerm) => { 
-    const filteredList = genres.filter((listItem) => listItem.fields.parentGenre === filterTerm);
-    const genreNamesList = filteredList.map((listItem) => listItem.fields.genre);
-    const alphabetizedList = genreNamesList.sort((a,b) => a-b);
-    console.log(genreNamesList);
-    if(alphabetizedList.length===0){
+  //function to create an alphabetical list of browsable topics for an individual browse list
+  //with list item linked to search results page
+  const createBrowseList = (parentList, filterByField, filterByValue, listTermKey) => {
+    //filter main list into subLists to be divided among subheadings
+    const filteredList = parentList.filter((listItem) =>
+    listItem.fields[filterByField] === filterByValue);
+
+    //alphabetize list of objects by the term that will appear on list
+    const alphaList = filteredList.sort(function(a, b) {
+      return a.fields[listTermKey].localeCompare(b.fields[listTermKey]);
+    });
+
+    //return list while awaiting async function completion to retrieve lists
+    if(alphaList.length===0) {
       return (
         <p>Loading...</p>
-      );
+      )
     }
-    console.log(alphabetizedList);
+    
+    //return an unordered list of browsable topics linked to search results page
     return (
       <ul>
-        {alphabetizedList.map((genre) => (
-          <li>{genre}</li>
+        {alphaList.map((listObject) => (
+          <li key={listObject.id}>
+            <Link to={`/browse/results/${listTermKey}=${listObject.fields[listTermKey]}`} browseID={listObject.id}>
+              {listObject.fields[listTermKey]}
+            </Link>
+          </li>
         ))}
       </ul>
     )
   }
+
+  
 
   return (
     <main>
@@ -80,10 +104,7 @@ function SearchBrowse(props) {
           <ul id="genre-List">
             <h4>Fiction Genres</h4>
             <ul>
-              {createGenreList("fiction")}
-              {/* {genres.filter(genre=>genre.fields.parentGenre==="fiction").sort((a,b)=>a-b).map((genre) => (
-                <li>{genre.fields.genre}</li>
-              ))} */}
+              {createBrowseList(genres, "parentGenre", "fiction", "genre")}
             </ul>
             <h4>Nonfiction Genres</h4>
             <ul></ul>
