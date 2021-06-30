@@ -1,6 +1,9 @@
 #nav-bar {
-  background-color: rgb(185, 222, 230);
+  width: 98vw;
+  background-color: rgb(196, 244, 232);
   padding: 1vh 0;
+  margin: 0 auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 #nav-link-list {
   list-style-type: none;

@@ -6,3 +6,10 @@
 .browseList{
   display: block;
 }
+
+#browse-by-tabs {
+  background: yellow;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

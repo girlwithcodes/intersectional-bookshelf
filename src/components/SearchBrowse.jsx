@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import axios from 'axios';
 import { baseURL, config } from '../services';
+import SearchForm from './SearchForm';
+import BrowseResults from './BrowseResults';
 import '../styles/SearchBrowse.css';
 
 function SearchBrowse(props) {
@@ -83,16 +85,17 @@ function SearchBrowse(props) {
     //return list while awaiting async function completion to retrieve lists
     if(alphaList.length===0) {
       return (
-        <p>Loading...</p>
+        <p>No Results</p>
       )
     }
     
     //return an unordered list of browsable topics linked to search results page
     return (
-      <ul>
+
+      <ul className="browse-by-list">
         {alphaList.map((listObject) => (
           <li key={listObject.id}>
-            <Link to={`/browse/results/${listTermKey}=${listObject.fields[listTermKey]}`} browseID={listObject.id}>
+            <Link to={`/browseResults/${listObject.fields[listTermKey]}`}>
               {listObject.fields[listTermKey]}
             </Link>
           </li>
@@ -101,22 +104,22 @@ function SearchBrowse(props) {
     )
   }
 
-  
-
   return (
     <main>
+      <h3>Search</h3>
       <section id="search-section">
-        <form>
-          <h3>search form here</h3>
-        </form>
+        <SearchForm />
       </section>
-      <section id="browse-by-section">
-        <button className="browseLink" onClick={displayGenreList}>Browse by Genre</button>
-        <button className="browseLink" onClick={displayRepTagList}>Browse by Representation Tag</button>
-        <button className="browseLink" onClick={displayAuthorTagList}>Browse by Author Tag</button>
 
-        <div className={genreListClass}id="genre-browse-list">
-          <ul id="genre-List">
+      <h3>Browse</h3>
+      <section id="browse-by-section">
+        <div id="browse-by-tabs">
+          <button className="browseLink" onClick={displayGenreList}>Browse by Genre</button>
+          <button className="browseLink" onClick={displayRepTagList}>Browse by Representation Tag</button>
+          <button className="browseLink" onClick={displayAuthorTagList}>Browse by Author Tag</button>
+        </div>
+
+        <div className={genreListClass} id="genre-browse-list">
             <h4>Fiction Genres</h4>
               {createBrowseList(genres, "parentGenre", "fiction", "genre")}
             
@@ -125,9 +128,8 @@ function SearchBrowse(props) {
 
             <h4>Poetry/Essay Genres</h4>
               {createBrowseList(genres, "parentGenre", "poetry/essay", "genre")}
-          </ul>
-
         </div>
+        
         <div className={repTagListClass} id="rep-tag-browse-list">
           <h4>Race and Ethnicity Representation Tags</h4>
             {createBrowseList(repTags, "typeOfTag", 1, "repTag")}
@@ -146,10 +148,10 @@ function SearchBrowse(props) {
 
           <h4>Body Positivity Representation Tags</h4>
             {createBrowseList(repTags, "typeOfTag", 6, "repTag")}
-
         </div>
+
         <div className={authorTagListClass} id="author-tag-browse-list">
-        <h4>Race and Ethnicity Author Representation Tags</h4>
+          <h4>Race and Ethnicity Author Representation Tags</h4>
             {createBrowseList(authorTags, "typeOfTag", 1, "authorTag")}
 
           <h4>Gender and Orientation Author Representation Tags</h4>

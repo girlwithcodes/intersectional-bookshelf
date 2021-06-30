@@ -4,6 +4,8 @@ import axios from 'axios';
 import Nav from './components/Nav';
 import Home from './components/Home';
 import SearchBrowse from './components/SearchBrowse';
+import SearchResults from './components/SearchResults';
+import BrowseResults from './components/BrowseResults';
 import Footer from './components/Footer';
 import { baseURL, config } from './services';
 import './styles/App.css';
@@ -32,11 +34,15 @@ function App() {
         <Home bookList={bookList} />
       </Route>
 
-      <Route path="/browse">
+      <Route exact path="/browse">
         <SearchBrowse bookList={bookList}/>
       </Route>
+
+      <Route path="/browseResults/:subject">
+        <BrowseResults />
+      </Route>
+
       <Route path="/recommend">
-        
       </Route>
 
       <Footer />

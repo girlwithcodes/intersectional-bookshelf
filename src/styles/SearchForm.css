@@ -1,0 +1,19 @@
+button {
+  margin: 0 auto;
+}
+
+.book-search-inputs {
+  border: none;
+} 
+
+#search-form-inputs-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#search-for-books-form {
+  width: 60vw;
+  margin: 1vh auto;
+}
