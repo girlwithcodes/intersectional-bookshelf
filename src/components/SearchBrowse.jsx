@@ -8,7 +8,7 @@ function SearchBrowse(props) {
   //declare stateful variables to hold browsable subjects 
   //(user can browse by genre, repTag, or authorTag)
   const [genres, setGenres] = useState([]);
-  const [repTags, setTags] = useState([]);
+  const [repTags, setRepTags] = useState([]);
   const [authorTags, setAuthorTags] = useState([]);
 
   //declare stateful variabls to hold seach terms for each searchable subject
@@ -29,7 +29,22 @@ function SearchBrowse(props) {
       const resp = await axios.get(url, config);
       setGenres(resp.data.records);
     }
+
+    const fetchRepTags = async() => {
+      const url=`${baseURL}/repTags`;
+      const resp = await axios.get(url, config);
+      setRepTags(resp.data.records);
+    }
+
+    const fetchAuthorTags = async() => {
+      const url=`${baseURL}/authorTags`;
+      const resp = await axios.get(url, config);
+      setAuthorTags(resp.data.records);
+    }
+
     fetchGenres();
+    fetchRepTags();
+    fetchAuthorTags();
   }, []);
 
   //function to toggle visibilty On visibilty of Genre List
@@ -103,28 +118,54 @@ function SearchBrowse(props) {
         <div className={genreListClass}id="genre-browse-list">
           <ul id="genre-List">
             <h4>Fiction Genres</h4>
-            <ul>
               {createBrowseList(genres, "parentGenre", "fiction", "genre")}
-            </ul>
+            
             <h4>Nonfiction Genres</h4>
-            <ul></ul>
+              {createBrowseList(genres, "parentGenre", "nonfiction", "genre")}
+
             <h4>Poetry/Essay Genres</h4>
-            <ul></ul>
+              {createBrowseList(genres, "parentGenre", "poetry/essay", "genre")}
           </ul>
+
         </div>
         <div className={repTagListClass} id="rep-tag-browse-list">
-          <ul>
-            <li>repTag list item</li>
-            <li>repTag list item</li>
-            <li>repTag list item</li>
-          </ul>
+          <h4>Race and Ethnicity Representation Tags</h4>
+            {createBrowseList(repTags, "typeOfTag", 1, "repTag")}
+
+          <h4>Gender and Orientation Representation Tags</h4>
+            {createBrowseList(repTags, "typeOfTag", 2, "repTag")}
+
+          <h4>Disability Representation Tags</h4>
+            {createBrowseList(repTags, "typeOfTag", 3, "repTag")}
+
+          <h4>Neurodivergence Representation Tags</h4>
+            {createBrowseList(repTags, "typeOfTag", 4, "repTag")}
+
+          <h4>Mental Health Representation Tags</h4>
+            {createBrowseList(repTags, "typeOfTag", 5, "repTag")}
+
+          <h4>Body Positivity Representation Tags</h4>
+            {createBrowseList(repTags, "typeOfTag", 6, "repTag")}
+
         </div>
         <div className={authorTagListClass} id="author-tag-browse-list">
-          <ul>
-            <li>authorTag list item</li>
-            <li>authorTag list item</li>
-            <li>authorTag list item</li>
-          </ul>
+        <h4>Race and Ethnicity Author Representation Tags</h4>
+            {createBrowseList(authorTags, "typeOfTag", 1, "authorTag")}
+
+          <h4>Gender and Orientation Author Representation Tags</h4>
+            {createBrowseList(authorTags, "typeOfTag", 2, "authorTag")}
+
+          <h4>Disability Author Representation Tags</h4>
+            {createBrowseList(authorTags, "typeOfTag", 3, "authorTag")}
+
+          <h4>Neurodivergence Author Representation Tags</h4>
+            {createBrowseList(authorTags, "typeOfTag", 4, "authorTag")}
+
+          <h4>Mental Health Author Representation Tags</h4>
+            {createBrowseList(authorTags, "typeOfTag", 5, "authorTag")}
+
+          <h4>Body Positivity Author Representation Tags</h4>
+            {createBrowseList(authorTags, "typeOfTag", 6, "authorTag")}
         </div>
       </section>
     </main>
