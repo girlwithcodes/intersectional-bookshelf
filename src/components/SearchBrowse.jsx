@@ -3,7 +3,6 @@ import { Link, Route } from 'react-router-dom';
 import axios from 'axios';
 import { baseURL, config } from '../services';
 import SearchForm from './SearchForm';
-import BrowseResults from './BrowseResults';
 import '../styles/SearchBrowse.css';
 
 function SearchBrowse(props) {
@@ -12,11 +11,6 @@ function SearchBrowse(props) {
   const [genres, setGenres] = useState([]);
   const [repTags, setRepTags] = useState([]);
   const [authorTags, setAuthorTags] = useState([]);
-
-  //declare stateful variabls to hold seach terms for each searchable subject
-  const [genreSearchTerms, setGenreSearchTerms] = useState([]);
-  const [repTagSearchTerms, setRepTagSearchTerms] = useState([]);
-  const [authorTagSearchTerms, setAuthorTagSearchTerms] = useState([]);
 
   //variables to hold classNames for browsable lists, for the purposes of
   //toggling list visibility
@@ -95,7 +89,7 @@ function SearchBrowse(props) {
       <ul className="browse-by-list">
         {alphaList.map((listObject) => (
           <li key={listObject.id}>
-            <Link to={`/browseResults/${listObject.fields[listTermKey]}`}>
+            <Link to={`/browseResults/${listObject.id}`}>
               {listObject.fields[listTermKey]}
             </Link>
           </li>
@@ -108,7 +102,7 @@ function SearchBrowse(props) {
     <main>
       <h3>Search</h3>
       <section id="search-section">
-        <SearchForm />
+        <SearchForm setSearchObject={props.setSearchObject}/>
       </section>
 
       <h3>Browse</h3>
@@ -170,6 +164,7 @@ function SearchBrowse(props) {
             {createBrowseList(authorTags, "typeOfTag", 6, "authorTag")}
         </div>
       </section>
+      
     </main>
   )
 }

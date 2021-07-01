@@ -1,6 +1,67 @@
-function BrowseResults() {
+import { useParams } from 'react-router-dom';
+import '../styles/BrowseAndSearchResults.css';
+
+function BrowseResults(props) {
+  const params = useParams();
+  const browseByID = params.id;
+  const bookList = props.bookList;
+  console.log(bookList);
+  const bookMatches = bookList.filter((book)=>book.fields.genres.includes(browseByID));
+  console.log(bookMatches);
+
+  const createTagList = (book, typeOfTag) => {
+    switch(typeOfTag) {
+      case "author":
+        return (
+          <ul className="book-tag-display-list">
+            <span>author representation tags: </span>
+            {book.fields.authorTagList.map((tag) => (
+              <li key={book.fields.authorTagList.indexOf(tag)}className="author-tag-item">
+                {tag} 
+                {console.log(tag.typeOfTag)}
+              </li>
+            ))}
+          </ul>
+        )
+
+      break;
+      case "rep":
+        return (
+          <ul className="book-tag-display-list">
+            <span>representation tags: </span>
+            {book.fields.repTagList.map((tag) => (
+              <li key={book.fields.repTagList.indexOf(tag)}className="rep-tag-item">
+                {tag} 
+              </li>
+            ))}
+          </ul>
+        )
+      break;
+    }
+    
+  }
+
   return (
-    <h2>Browse Results</h2>
+    <main>
+      <h2>Browse Results</h2>
+      <ul className="book-matches-list">
+        {bookMatches.map((book)=>(
+          <li key={book.id}>
+            <div className="book-match-div">
+              <img className="results-list-image" src={book.fields.imageURL} />
+              <div className="book-result-info-div">
+                <h6>{book.fields.title}</h6>
+                <div>
+                  {book.fields.author}
+                  {createTagList(book, "author")}
+                </div>
+                {createTagList(book, "rep")}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </main>
   );
 }
 export default BrowseResults;

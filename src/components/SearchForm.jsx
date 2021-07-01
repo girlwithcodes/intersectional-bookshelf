@@ -1,25 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Link, Route, useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { baseURL, config } from '../services';
-import SearchResults from './SearchResults';
+import { Link } from 'react-router-dom';
 import '../styles/SearchForm.css';
 
 function SearchForm(props) {
-   //declare stateful variabls to hold seach terms for each searchable subject
+   //declare stateful variables to hold seach terms for each searchable subject
   const [genreSearchTerms, setGenreSearchTerms] = useState([]);
   const [repTagSearchTerms, setRepTagSearchTerms] = useState([]);
   const [authorTagSearchTerms, setAuthorTagSearchTerms] = useState([]);
 
+  //declare stateful variables to hold value of current text input
   const [genreInput, setGenreInput] = useState("");
   const [repTagInput, setRepTagInput] = useState("");
   const [authorTagInput, setAuthorTagInput] = useState("");
 
-  const [searchObject, setSearchObject] = useState({})
-
-
+  //update the search terms object whenever the genre, repTag, and authorTag terms are changed
   useEffect(()=>{
-    setSearchObject({
+    props.setSearchObject({
       genreTerms: genreSearchTerms,
       repTagTerms: repTagSearchTerms,
       authorTagTerms: authorTagSearchTerms
@@ -27,6 +23,7 @@ function SearchForm(props) {
   }, [genreSearchTerms, repTagSearchTerms, authorTagSearchTerms]);
 
 
+  //add current input text to appropriate search terms array when an arrow button is clicked
   const handleInputChange = (e, inputField) => {
     e.preventDefault();
     switch(inputField) {
@@ -44,6 +41,7 @@ function SearchForm(props) {
     }
   }
 
+  //delete a search term from the appropriate search term array when user clicks clicks the term in their displayed search term list
   const removeFromList = (itemToRemove, listToEdit) => {
     switch (listToEdit) {
       case "genre":
@@ -103,10 +101,6 @@ function SearchForm(props) {
         <button>Search</button>
       </Link>
     </form>
-
-    <Route path="/searchResults">
-      <SearchResults searchObject={searchObject}/>
-    </Route>
     </section>
   )
 }

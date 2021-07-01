@@ -1,0 +1,35 @@
+main {
+  margin: 0;
+}
+.results-list-image {
+  width: 100px;
+}
+
+.book-match-div {
+  display: flex;
+  flex-direction: row;
+  margin: 2vh 0;
+  padding: 1vh 0;
+  border-bottom: 1px solid black;
+  width: 100vw;
+}
+
+.book-matches-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+
+.book-tag-display-list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+}
+
+.rep-tag-item {
+  margin: 0 4px;
+}
+
+.author-tag-item {
+  margin: 0 4px;
+}

@@ -13,6 +13,10 @@ import './styles/App.css';
 function App() {
   //set state for bookList and toggleFetch
   const [bookList, setBookList] = useState([]);
+  const [genreList, setGenreList] = useState([]);
+  const [repTagList, setRepTagList] = useState([]);
+  const [authorTagList, setAuthorTagList] = useState([]);
+  const [searchObject, setSearchObject] = useState({});
   const [toggleFetch, setToggleFetch] = useState(false);
 
   //define useEffect with fetchBooks function, run on toggleFetch
@@ -35,11 +39,15 @@ function App() {
       </Route>
 
       <Route exact path="/browse">
-        <SearchBrowse bookList={bookList}/>
+        <SearchBrowse bookList={bookList} setSearchObject={setSearchObject}/>
       </Route>
 
-      <Route path="/browseResults/:subject">
-        <BrowseResults />
+      <Route path="/browseResults/:id">
+        <BrowseResults bookList={bookList}/>
+      </Route>
+
+      <Route path="/searchResults">
+        <SearchResults searchObject={searchObject}/>
       </Route>
 
       <Route path="/recommend">
