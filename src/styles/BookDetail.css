@@ -1,0 +1,12 @@
+img {
+  width: 15vw;
+  min-width: 200px;
+}
+
+.book-description-div {
+  overflow-y: hidden;
+}
+
+#book-description {
+  max-height: 25vh;
+}

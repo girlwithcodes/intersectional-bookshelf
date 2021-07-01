@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import '../styles/BrowseAndSearchResults.css';
 
 function BrowseResults(props) {
@@ -18,7 +18,6 @@ function BrowseResults(props) {
             {book.fields.authorTagList.map((tag) => (
               <li key={book.fields.authorTagList.indexOf(tag)}className="author-tag-item">
                 {tag} 
-                {console.log(tag.typeOfTag)}
               </li>
             ))}
           </ul>
@@ -46,19 +45,21 @@ function BrowseResults(props) {
       <h2>Browse Results</h2>
       <ul className="book-matches-list">
         {bookMatches.map((book)=>(
-          <li key={book.id}>
-            <div className="book-match-div">
-              <img className="results-list-image" src={book.fields.imageURL} />
-              <div className="book-result-info-div">
-                <h6>{book.fields.title}</h6>
-                <div>
-                  {book.fields.author}
-                  {createTagList(book, "author")}
+          <Link to={`/bookDetail/${book.id}`}>
+            <li key={book.id}>
+              <div className="book-match-div">
+                <img className="results-list-image" src={book.fields.imageURL} />
+                <div className="book-result-info-div">
+                  <h6>{book.fields.title}</h6>
+                  <div>
+                    {book.fields.author}
+                    {createTagList(book, "author")}
+                  </div>
+                  {createTagList(book, "rep")}
                 </div>
-                {createTagList(book, "rep")}
               </div>
-            </div>
-          </li>
+            </li>
+          </Link>
         ))}
       </ul>
     </main>

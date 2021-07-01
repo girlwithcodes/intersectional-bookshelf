@@ -6,6 +6,7 @@ import Home from './components/Home';
 import SearchBrowse from './components/SearchBrowse';
 import SearchResults from './components/SearchResults';
 import BrowseResults from './components/BrowseResults';
+import BookDetail from './components/BookDetail';
 import Footer from './components/Footer';
 import { baseURL, config } from './services';
 import './styles/App.css';
@@ -67,11 +68,15 @@ function App() {
       </Route>
 
       <Route path="/browseResults/:id">
-        <BrowseResults bookList={bookList}/>
+        <BrowseResults bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
       <Route path="/searchResults">
         <SearchResults searchObject={searchObject} bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
+      </Route>
+
+      <Route path="/bookDetail/:id">
+        <BookDetail bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList} />
       </Route>
 
       <Route path="/recommend">

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/BrowseAndSearchResults.css';
 
 function SearchResults(props) {
   const [searchObject, setSearchObject] = useState(props.searchObject);
@@ -6,6 +8,8 @@ function SearchResults(props) {
   const genreSearchTerms = searchObject.genreTerms;
   const repTagSearchTerms = searchObject.repTagTerms;
   const authorTagSearchTerms = searchObject.authorTagTerms;
+  let finalMatchList = [];
+  let finalMatchObject = {};
   let genreResults;
   let tagMatchResults;
   
@@ -25,18 +29,17 @@ function SearchResults(props) {
         });
         genreBookResults = [...genreBookResults, ...booksInGenre];
       })
+    }
+    return genreBookResults;
   }
-  return genreBookResults;
-}
 
-const findTagMatches = () => {
-  let resultsObject = {};
-  let repTagMatches = [];
-  let authorTagMatches = [];
-  let tagMatches;
-  let tagsLC;
+  const findTagMatches = () => {
+    let resultsObject = {};
+    let repTagMatches = [];
+    let authorTagMatches = [];
+    let tagMatches;
+    let tagsLC;
   
-
   if(repTagSearchTerms && repTagSearchTerms.length!==0) {
     repTagSearchTerms.forEach((term)=>{
       tagMatches = bookList.filter((book)=> {
@@ -74,32 +77,113 @@ const findTagMatches = () => {
 
     resultsObject[match.id] = bookObject;
     })
-    console.log(resultsObject);
     return resultsObject;
-}
+  }
 
-const removeGenreMismatches = (genreList, tagMatchObject) => {
-  let filteredObject = {};
-  if(genreList && genreList.length!==0) {
-    Object.keys(tagMatchObject).forEach((key)=>{
-      // console.log(tagMatchObject[key]);
-      let genresLC = tagMatchObject[key].book.fields.genreList.map((genre)=>genre.toLowerCase());
-      genreList.forEach((genre)=> {
-        if(genresLC.includes(genre.toLowerCase())){
-          filteredObject[key] = tagMatchObject[key];
+  const removeGenreMismatches = (genreMatchObjectList, tagMatchObjectList) => {
+    if(genreMatchObjectList && genreMatchObjectList.length!==0){
+      let finalMatchObject = {};
+      const genreMatchIDs = genreMatchObjectList.map((book)=>book.id);
+      Object.keys(tagMatchObjectList).forEach((key)=> {
+        if(genreMatchIDs.includes(key)){
+          finalMatchObject[key] = tagMatchObjectList[key];
         }
       })
-    })
-    console.log(filteredObject);
+      return finalMatchObject;
+    }
+    return tagMatchObjectList;
+  }
+
+  const createTagList = (book, typeOfTag) => {
+    switch(typeOfTag) {
+      case "author":
+        return (
+          <ul className="book-tag-display-list">
+            <span>author representation tags: </span>
+            {book.fields.authorTagList.map((tag) => (
+              <li key={book.fields.authorTagList.indexOf(tag)}className="author-tag-item">
+                {tag} 
+              </li>
+            ))}
+          </ul>
+        )
+
+      break;
+      case "rep":
+        return (
+          <ul className="book-tag-display-list">
+            <span>representation tags: </span>
+            {book.fields.repTagList.map((tag) => (
+              <li key={book.fields.repTagList.indexOf(tag)}className="rep-tag-item">
+                {tag} 
+              </li>
+            ))}
+          </ul>
+        )
+      break;
+    }  
+  }
+
+  genreResults = findGenreResults();
+  tagMatchResults = findTagMatches();
+  finalMatchObject = removeGenreMismatches(genreResults, tagMatchResults);
+  finalMatchList = genreResults;
+  
+  if((!repTagSearchTerms || repTagSearchTerms.length===0) && (!authorTagSearchTerms || authorTagSearchTerms.length===0)) {
+    return (
+      <main>
+        <h2>Search Results</h2>
+        <ul className="book-matches-list">
+          {genreResults.map((match)=> (
+            <Link to={`/bookDetail/${match.id}`}>
+              <li key={match.id}>
+                <div className="book-match-div">
+                  <img className="results-list-image" src={match.fields.imageURL}/>
+                  <div className="book-results-info-div">
+                    <h6>{match.fields.title}</h6>
+                    <div>
+                      {match.fields.author}
+                      {createTagList(match, "author")}
+                    </div>
+                    {createTagList(match, "rep")}
+                  </div>
+                </div>
+              </li>
+            </Link>
+          ))}
+        </ul>
+      </main> 
+    )
+  } else {
+    finalMatchList = Object.values(finalMatchObject);
+    console.log(finalMatchList);
+    finalMatchList.sort((a, b) => b.numMatches - a.numMatches);
+    console.log(finalMatchList);
+    return (
+      <main>
+        <h2>Search Results</h2>
+        <ul className="book-matches-list">
+          {finalMatchList.map((match)=> (
+            <Link to={`/bookDetail/${match.book.id}`}>
+              <li key={match.book.id}>
+                <div className="book-match-div">
+                  <img className="results-list-image" src={match.book.fields.imageURL}/>
+                  <div className="book-results-info-div">
+                    <h6>{match.book.fields.title}</h6>
+                    <div>
+                      {match.book.fields.author}
+                      {createTagList(match.book, "author")}
+                    </div>
+                    {createTagList(match.book, "rep")}
+                  </div>
+                </div>
+              </li>
+            </Link>
+          ))}
+        </ul>
+      </main>
+    )
   }
 }
 
-genreResults = findGenreResults();
-tagMatchResults = findTagMatches();
-removeGenreMismatches(genreResults, tagMatchResults);
-
-  return (
-    <h2>Search Results</h2>
-  )
-}
 export default SearchResults;
