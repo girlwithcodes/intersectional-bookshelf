@@ -28,7 +28,31 @@ function App() {
       const resp = await axios.get(url, config);
       setBookList(resp.data.records);
     }
+
+    const fetchGenres = async() => {
+      const url = `${baseURL}/genres`;
+      //save data
+      const resp = await axios.get(url, config);
+      setGenreList(resp.data.records);
+    }
+
+    const fetchRepTags = async() => {
+      const url = `${baseURL}/repTags`;
+      //save data
+      const resp = await axios.get(url, config);
+      setRepTagList(resp.data.records);
+    }
+
+    const fetchAuthorTags = async() => {
+      const url = `${baseURL}/authorTags`;
+      //save data
+      const resp = await axios.get(url, config);
+      setAuthorTagList(resp.data.records);
+    }
     fetchBooks();
+    fetchGenres();
+    fetchRepTags();
+    fetchAuthorTags();
   }, [toggleFetch]);
 
   return (
@@ -39,7 +63,7 @@ function App() {
       </Route>
 
       <Route exact path="/browse">
-        <SearchBrowse bookList={bookList} setSearchObject={setSearchObject}/>
+        <SearchBrowse bookList={bookList} setSearchObject={setSearchObject} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
       <Route path="/browseResults/:id">
@@ -47,7 +71,7 @@ function App() {
       </Route>
 
       <Route path="/searchResults">
-        <SearchResults searchObject={searchObject}/>
+        <SearchResults searchObject={searchObject} bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
       <Route path="/recommend">

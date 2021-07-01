@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Link, Route } from 'react-router-dom';
-import axios from 'axios';
-import { baseURL, config } from '../services';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import SearchForm from './SearchForm';
 import '../styles/SearchBrowse.css';
 
 function SearchBrowse(props) {
-  //declare stateful variables to hold browsable subjects 
-  //(user can browse by genre, repTag, or authorTag)
-  const [genres, setGenres] = useState([]);
-  const [repTags, setRepTags] = useState([]);
-  const [authorTags, setAuthorTags] = useState([]);
+  //declare get lists from props 
+  const genres = props.genreList;
+  const repTags = props.repTagList;
+  const authorTags = props.authorTagList;
 
   //variables to hold classNames for browsable lists, for the purposes of
   //toggling list visibility
@@ -18,30 +15,6 @@ function SearchBrowse(props) {
   const [repTagListClass, setRepTagListClass] = useState("browseList invisible");
   const [authorTagListClass, setAuthorTagListClass] = useState("browseList invisible");
 
-  //useEffect to get lists of genres, repTags, and authorTags for respective tables
-  useEffect(() => {
-    const fetchGenres = async() => {
-      const url=`${baseURL}/genres`;
-      const resp = await axios.get(url, config);
-      setGenres(resp.data.records);
-    }
-
-    const fetchRepTags = async() => {
-      const url=`${baseURL}/repTags`;
-      const resp = await axios.get(url, config);
-      setRepTags(resp.data.records);
-    }
-
-    const fetchAuthorTags = async() => {
-      const url=`${baseURL}/authorTags`;
-      const resp = await axios.get(url, config);
-      setAuthorTags(resp.data.records);
-    }
-
-    fetchGenres();
-    fetchRepTags();
-    fetchAuthorTags();
-  }, []);
 
   //function to toggle visibilty On visibilty of Genre List
   const displayGenreList = () => {

@@ -13,6 +13,7 @@ function SearchForm(props) {
   const [repTagInput, setRepTagInput] = useState("");
   const [authorTagInput, setAuthorTagInput] = useState("");
 
+
   //update the search terms object whenever the genre, repTag, and authorTag terms are changed
   useEffect(()=>{
     props.setSearchObject({
@@ -28,15 +29,15 @@ function SearchForm(props) {
     e.preventDefault();
     switch(inputField) {
       case "genre":
-        setGenreSearchTerms([...genreSearchTerms, genreInput]);
+        setGenreSearchTerms([...genreSearchTerms, genreInput.toLowerCase()]);
         setGenreInput("");
         break;
       case "repTag":
-        setRepTagSearchTerms([...repTagSearchTerms, repTagInput]);
+        setRepTagSearchTerms([...repTagSearchTerms, repTagInput.toLowerCase()]);
         setRepTagInput("");
         break;
       case "authorTag":
-        setAuthorTagSearchTerms([...authorTagSearchTerms, authorTagInput]);
+        setAuthorTagSearchTerms([...authorTagSearchTerms, authorTagInput.toLowerCase()]);
         setAuthorTagInput("");
     }
   }
