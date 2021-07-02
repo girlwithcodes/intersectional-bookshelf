@@ -37,57 +37,94 @@ function BookDetail(props) {
   const createTagList = (typeOfTag) => {
     switch(typeOfTag) {
       case "author":
-        return (
-          <ul className="book-tag-display-list">
-            <span>author representation tags: </span>
-            {book.fields.authorTagList.map((tag) => (
-              <li key={book.fields.authorTagList.indexOf(tag)}className="author-tag-item">
-                {tag} 
-              </li>
-            ))}
-          </ul>
-        )
-
+        const authorTags = book.fields.authorTagList;
+        if(authorTags && authorTags.length!==0) {
+          return (
+            <ul className="book-tag-display-list">
+              <span>author representation tags: </span>
+              {authorTags.map((tag) => (
+                <li key={authorTags.indexOf(tag)}className="author-tag-item">
+                  {tag} 
+                </li>
+              ))}
+            </ul>
+          )
+        } else {
+          return (
+            <ul className="book-tag-display-list"> 
+              <span>author representation tags: </span>
+              <li>none found</li>
+            </ul>
+          )
+        }
       break;
       case "rep":
-        return (
-          <ul className="book-tag-display-list">
+        const repTags = book.fields.repTagList;
+        if(repTags && repTags.length!==0) {
+          return (
+            <ul className="book-tag-display-list">
+              <span>representation tags: </span>
+              {repTags.map((tag) => (
+                <li key={repTags.indexOf(tag)}className="rep-tag-item">
+                  {tag} 
+                </li>
+              ))}
+            </ul>
+          )
+        } else {
+          return (
+            <ul className="book-tag-display-list"> 
             <span>representation tags: </span>
-            {book.fields.repTagList.map((tag) => (
-              <li key={book.fields.repTagList.indexOf(tag)}className="rep-tag-item">
-                {tag} 
-              </li>
-            ))}
+            <li>none found</li>
           </ul>
-        )
+          )
+        }
       break;
 
       case "theme":
-        const themeTagList = book.fields.themeTags.split(",");
-        return (
-          <ul className="book-tag-display-list">
-            <span>theme and topic tags: </span>
-            {themeTagList.map((tag) => (
-              <li key={themeTagList.indexOf(tag)}className="theme-tag-item">
-                {tag} 
-              </li>
-            ))}
-          </ul>
-        )
+        const themeTags = book.fields.themeTagList;
+        if(themeTags && themeTags.length!==0) {
+          return (
+            <ul className="book-tag-display-list">
+              <span>theme and topic tags: </span>
+              {themeTags.map((tag) => (
+                <li key={themeTags.indexOf(tag)}className="theme-tag-item">
+                  {tag} 
+                </li>
+              ))}
+            </ul>
+          )
+        } else {
+          return (
+            <ul className="book-tag-display-list"> 
+              <span>theme and topic tags: </span>
+              <li>none found</li>
+            </ul>
+          )
+        }
         break;
 
         case "trigger":
-        const triggerWarningList = book.fields.themeTags.split(",");
-        return (
-          <ul className="book-tag-display-list">
-            <span>theme and topic tags: </span>
-            {themeTagList.map((tag) => (
-              <li key={themeTagList.indexOf(tag)}className="theme-tag-item">
-                {tag} 
-              </li>
-            ))}
+          const triggerWarnings = book.fields.triggerWarningList;
+        if(triggerWarnings && triggerWarnings.length!==0) {
+          return (
+            <ul className="book-tag-display-list">
+              <span>trigger warnings:</span>
+              {triggerWarnings.map((tag) => (
+                <li key={triggerWarnings.indexOf(tag)}className="trigger-tag-item">
+                  {tag} 
+                </li>
+              ))}
+            </ul>
+          );
+        } else {
+          return (
+            <ul className="book-tag-display-list"> 
+            <span>trigger warnings: </span>
+            <li>none found</li>
           </ul>
-        )
+          )
+        }
         break;
 
     }  
@@ -98,7 +135,7 @@ function BookDetail(props) {
       return (
         <section id="ratings-reviews-section">
           {reviews.map((review)=>(
-            <article className = "review">
+            <article key={review.id} className = "review">
               <p><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.fields.author}</p>
               <p><span>Representation Rating: {review.fields.repRating} / 5</span>
               <span>Overall Rating: {review.fields.enjoymentRating} / 5</span></p>
@@ -132,6 +169,7 @@ function BookDetail(props) {
             {createTagList("author")}
             {createTagList("rep")}
             {createTagList("theme")}
+            {createTagList("trigger")}
         </div>
 
         <div id="comment-form-div">

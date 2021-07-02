@@ -45,8 +45,8 @@ function BrowseResults(props) {
       <h2>Browse Results</h2>
       <ul className="book-matches-list">
         {bookMatches.map((book)=>(
-          <Link to={`/bookDetail/${book.id}`}>
-            <li key={book.id}>
+          <Link to={`/bookDetail/${book.id}`} key={book.id}>
+            <li>
               <div className="book-match-div">
                 <img className="results-list-image" src={book.fields.imageURL} />
                 <div className="book-result-info-div">

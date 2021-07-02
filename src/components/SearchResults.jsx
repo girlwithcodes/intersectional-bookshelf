@@ -135,8 +135,8 @@ function SearchResults(props) {
         <h2>Search Results</h2>
         <ul className="book-matches-list">
           {genreResults.map((match)=> (
-            <Link to={`/bookDetail/${match.id}`}>
-              <li key={match.id}>
+            <Link to={`/bookDetail/${match.id}`} key={match.id}>
+              <li>
                 <div className="book-match-div">
                   <img className="results-list-image" src={match.fields.imageURL}/>
                   <div className="book-results-info-div">
@@ -164,8 +164,8 @@ function SearchResults(props) {
         <h2>Search Results</h2>
         <ul className="book-matches-list">
           {finalMatchList.map((match)=> (
-            <Link to={`/bookDetail/${match.book.id}`}>
-              <li key={match.book.id}>
+            <Link to={`/bookDetail/${match.book.id}`} key={match.book.id}>
+              <li>
                 <div className="book-match-div">
                   <img className="results-list-image" src={match.book.fields.imageURL}/>
                   <div className="book-results-info-div">
