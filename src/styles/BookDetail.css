@@ -1,12 +1,37 @@
-img {
-  width: 15vw;
-  min-width: 200px;
-}
 
 .book-description-div {
   overflow-y: hidden;
 }
 
+#author-name-span {
+  font-size: 14px;
+}
+
 #book-description {
   max-height: 25vh;
+  width: 40vw;
+  margin: 1vh 2vw;
+}
+
+.book-image-tag-div {
+  width: 96vw;
+  min-width: 96vw;
+  margin: 1vh 2vw;
+  background: yellow;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  flex-wrap: wrap;
+
+}
+
+#book-cover-img {
+  width: 15vw;
+  min-width: 200px;
+  padding: 1vh;
+  background: red;
+}
+
+#rep-author-tag-div {
+  margin: 5vh 2vw;
 }

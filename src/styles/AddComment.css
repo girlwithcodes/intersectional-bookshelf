@@ -1,0 +1,13 @@
+#add-comment-form label {
+  display: inline-block;
+  width: 8vw;
+  background-color: blue;
+  margin: 1vh 0.5vw;
+}
+
+#add-comment-form {
+  background-color: grey;
+  width: 46vw;
+  min-width: 500px;
+  margin: 2vh 1vw;
+}
