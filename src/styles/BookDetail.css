@@ -1,6 +1,10 @@
 
 .book-description-div {
-  overflow-y: hidden;
+  overflow-y: auto;
+}
+
+.review-profile-pic {
+  max-width: 50px;
 }
 
 #author-name-span {
@@ -8,7 +12,7 @@
 }
 
 #book-description {
-  max-height: 25vh;
+  max-height: 40vh;
   width: 40vw;
   margin: 1vh 2vw;
 }
@@ -34,4 +38,17 @@
 
 #rep-author-tag-div {
   margin: 5vh 2vw;
+}
+
+@media screen and (max-width: 412px) {
+  #book-description {
+    max-height: 25vh;
+    width: 80vw;
+    margin: 1vh 2vw;
+  }
+  .book-description-div {
+    width: 80vw;
+    overflow-y: scroll;
+  }
+
 }

@@ -76,7 +76,7 @@ function App() {
       </Route>
 
       <Route path="/bookDetail/:id">
-        <BookDetail bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList} />
+        <BookDetail bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
       <Route path="/recommend">
