@@ -15,7 +15,7 @@ function Nav() {
           </Link>
         </li>
         <li>
-          <Link to="/recommend">
+          <Link to="/recommend/newRec">
             Make a Recommendation
           </Link>
         </li>

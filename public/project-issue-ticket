@@ -1,0 +1,76 @@
+# PROJECT ISSUE TICKET
+
+
+## Unexpected Behavior
+
+Hi! Trying to use a filterBy formula as a query parameter to retrieve comments for only one book rather than all comments for all books in my Airtable database.  The comments table is a separate table from the books table.  I keep getting an error 422.  I've watched a few videos on using the SEARH and FIND filterby functions; I've tried adding a new field to my comments table that uses the ARRAYJOIN function to change the bookID array into a bookID string and searching by that, and I've tried playing around with AirTable's URL encoder.  It's either an error 422, or I retrieve and display all comments for all books. I could just retrieve all comments for all books and then use the js array filter function, but it seems ridiculous to retrieve all the comments for every book when I only want the comments for 1 book.
+
+## Expected Behavior
+
+I expect to issue the API call in the fetchReviews function and for it to return an array of reviews only linked to the current book from the reviews table of may database. 
+
+## Reproduce the Error
+
+> Describe the steps we can take to reproduce the error, i.e.:
+
+```md
+1. Clone this repo.
+2. Run `npm start`.
+3. Navigate to the Browse Page
+4. Click the browse by genre button and choose fantasy
+5. Click on The Priory of The Orange Tree (this is currently the only book in the database with comments);
+6. You will see an error 422 in the console, and the reviews section will not display any reviews.
+7.  The code in question is on lines 19-27 in the BookDetail component
+```
+
+## Documentation
+
+> Include the exact error message, and if helpful, any supplemental documentation, such as screen captures.
+
+```md
+xhr.js:177 GET https://api.airtable.com/v0/appSPDLPd4tIb0EYG/reviews/?filterByFormula=SEARCH(recPfzmjgj023WzW3%C%20{bookID}) 422 (Unprocessable Entity)
+dispatchXhrRequest @ xhr.js:177
+xhrAdapter @ xhr.js:13
+dispatchRequest @ dispatchRequest.js:52
+Promise.then (async)
+request @ Axios.js:61
+Axios.<computed> @ Axios.js:76
+wrap @ bind.js:9
+fetchReviews @ BookDetail.jsx:25
+fetchBook @ BookDetail.jsx:36
+async function (async)
+fetchBook @ BookDetail.jsx:34
+(anonymous) @ BookDetail.jsx:39
+invokePassiveEffectCreate @ react-dom.development.js:23487
+callCallback @ react-dom.development.js:3945
+invokeGuardedCallbackDev @ react-dom.development.js:3994
+invokeGuardedCallback @ react-dom.development.js:4056
+flushPassiveEffectsImpl @ react-dom.development.js:23574
+unstable_runWithPriority @ scheduler.development.js:468
+runWithPriority$1 @ react-dom.development.js:11276
+flushPassiveEffects @ react-dom.development.js:23447
+(anonymous) @ react-dom.development.js:23324
+workLoop @ scheduler.development.js:417
+flushWork @ scheduler.development.js:390
+performWorkUntilDeadline @ scheduler.development.js:157
+
+Uncaught (in promise) Error: Request failed with status code 422
+    at createError (createError.js:16)
+    at settle (settle.js:17)
+    at XMLHttpRequest.handleLoad (xhr.js:62)
+
+```
+
+## Attempted Resolution
+
+
+```md
+1. https://www.youtube.com/watch?v=PU5A904iWG4
+
+2. https://codepen.io/airtable/full/rLKkYB?baseId=appSPDLPd4tIb0EYG&tableId=tblkadfFjNHwNgIDd
+
+3. https://blog.airtable.com/the-right-sort-of-api-updates/
+
+4. https://support.airtable.com/hc/en-us/articles/203255215-Formula-field-reference
+
+5. https://vancelucas.com/blog/airtable-api-filterbyformula/

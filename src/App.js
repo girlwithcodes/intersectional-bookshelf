@@ -7,6 +7,7 @@ import SearchBrowse from './components/SearchBrowse';
 import SearchResults from './components/SearchResults';
 import BrowseResults from './components/BrowseResults';
 import BookDetail from './components/BookDetail';
+import AdRec from './components/AddRec';
 import Footer from './components/Footer';
 import { baseURL, config } from './services';
 import './styles/App.css';
@@ -79,7 +80,8 @@ function App() {
         <BookDetail bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
-      <Route path="/recommend">
+      <Route path="/recommend/:type">
+        <AdRec bookList={bookList} />
       </Route>
 
       <Footer />

@@ -17,11 +17,16 @@ function BookDetail(props) {
   useEffect(()=>{
     
     const fetchReviews = async() => {
-      const query = { filterByFormula: `FIND("${bookID}", ARRAYJOIN({books})) > 0` };
-      const url = `${baseURL}/reviews/?${query}`;
-      const resp = await axios.get(url, config);
-      console.log(resp.data.records);
-      setReviews(resp.data.records);
+      if(book) {
+        const query = "?filterByFormula=";
+        const filterBy = `SEARCH(${bookID}%C {bookID})`;
+        const url = `${baseURL}/reviews/${query}${filterBy}`;
+        console.log(url);
+        const resp = await axios.get(url, config);
+        console.log(resp.data.records);
+        setReviews(resp.data.records);
+      }
+      
     }
 
     const fetchBook = async() => {

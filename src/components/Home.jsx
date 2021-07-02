@@ -14,7 +14,7 @@ function Home(props) {
         <Link to="/browse">
           Browse Books
         </Link>
-        <Link to="/recommend">
+        <Link to="/recommend/newRec">
           Recommend a Book
         </Link>
       </section>
