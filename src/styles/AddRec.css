@@ -1,0 +1,69 @@
+button {
+  background: none;
+}
+fieldset {
+  border: none;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+.currently-selected-display-ul {
+  display: flex;
+  flex-direction: row;
+}
+
+.tag-selection-dropdown {
+  display: block;
+  width: 50vw;
+  min-width: 350px;
+  background-color: rgb(255, 191, 151);
+}
+
+.tag-selection-dropdown.invisible {
+  display: none;
+  
+}
+
+.tag-selection-main-button {
+  width: 30vw;
+  min-width: 350px;
+  margin: 1vh;
+}
+
+.tag-selection-sub-button {
+  width: 25vw;
+  margin: 1vh;
+  min-width: 350px;
+}
+
+.tag-selection-sub-dropdown {
+  display: block;
+}
+
+.tag-selection-sub-dropdown.invisible {
+  display: none;
+}
+
+#add-rec-form {
+  width: 80vw;
+  min-width: 415px;
+  margin: 0 auto;
+}
+
+#basic-book-info {
+  display: flex;
+  flex-direction: column;
+}
+
+#tag-selection-lists {
+  margin: 1vh;
+  display: flex;
+  flex-direction: column;
+
+}
+
+#theme-and-trigger-input-section {
+  margin: 2vh 0;
+}

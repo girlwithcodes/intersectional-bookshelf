@@ -7,7 +7,7 @@ import SearchBrowse from './components/SearchBrowse';
 import SearchResults from './components/SearchResults';
 import BrowseResults from './components/BrowseResults';
 import BookDetail from './components/BookDetail';
-import AdRec from './components/AddRec';
+import AddRec from './components/AddRec';
 import Footer from './components/Footer';
 import { baseURL, config } from './services';
 import './styles/App.css';
@@ -81,7 +81,7 @@ function App() {
       </Route>
 
       <Route path="/recommend/:type">
-        <AdRec bookList={bookList} />
+        <AddRec bookList={bookList} setToggleFetch={setToggleFetch} />
       </Route>
 
       <Footer />

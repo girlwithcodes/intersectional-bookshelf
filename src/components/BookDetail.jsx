@@ -9,7 +9,7 @@ import { list } from 'postcss';
 function BookDetail(props) {
   const [book, setBook] = useState({});
   const [reviews, setReviews] = useState([]);
-  const [toggleFectch, setToggleFetch] = useState(false);
+  const [toggleFetch, setToggleFetch] = useState(false);
   const params = useParams();
   const bookID = params.id;
   console.log(bookID);
@@ -18,9 +18,9 @@ function BookDetail(props) {
     
     const fetchReviews = async() => {
       if(book) {
-        const query = "?filterByFormula=";
-        const filterBy = `SEARCH(${bookID}%C {bookID})`;
-        const url = `${baseURL}/reviews/${query}${filterBy}`;
+        // const query = "?filterByFormula=";
+        // const filterBy = `SEARCH(${bookID}, {bookID})`;
+        const url = `${baseURL}/reviews/`;
         console.log(url);
         const resp = await axios.get(url, config);
         console.log(resp.data.records);
@@ -37,7 +37,7 @@ function BookDetail(props) {
     }
     
     fetchBook();
-  },[toggleFectch]);
+  },[toggleFetch]);
 
   const createTagList = (typeOfTag) => {
     switch(typeOfTag) {
@@ -136,15 +136,17 @@ function BookDetail(props) {
   }
 
   const listReviews = () => {
-    if(reviews && reviews.length!==0){
+    if(book.fields.reviews && book.fields.reviews.length!==0 && reviews && reviews.length!==0){
+      // const reviewList = reviews.filter((review)=>book.fields.reviews.includes(review.id));
+      const reviewList = book.fields.reviews;
       return (
         <section id="ratings-reviews-section">
-          {reviews.map((review)=>(
+          {reviewList.map((review)=>(
             <article key={review.id} className = "review">
-              <p><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.fields.author}</p>
-              <p><span>Representation Rating: {review.fields.repRating} / 5</span>
-              <span>Overall Rating: {review.fields.enjoymentRating} / 5</span></p>
-              <p>{review.fields.comment}</p>
+              <p><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.author}</p>
+              <p><span>Representation Rating: {review.repRating} / 5</span>
+              <span>Overall Rating: {review.enjoymentRating} / 5</span></p>
+              <p>{review.comment}</p>
             </article>
           ))}
 
