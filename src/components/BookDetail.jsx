@@ -87,7 +87,7 @@ function BookDetail(props) {
       break;
 
       case "theme":
-        const themeTags = book.fields.themeTagList;
+        const themeTags = book.fields.themeTags.split(", ");
         if(themeTags && themeTags.length!==0) {
           return (
             <ul className="book-tag-display-list">
@@ -110,7 +110,7 @@ function BookDetail(props) {
         break;
 
         case "trigger":
-          const triggerWarnings = book.fields.triggerWarningList;
+          const triggerWarnings = book.fields.triggerWarnings.split(", ");
         if(triggerWarnings && triggerWarnings.length!==0) {
           return (
             <ul className="book-tag-display-list">

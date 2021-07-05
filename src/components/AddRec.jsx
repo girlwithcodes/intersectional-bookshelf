@@ -4,7 +4,7 @@ import axios from 'axios';
 import { baseURL, config } from '../services';
 import '../styles/AddRec.css';
 
-function AddRec() {
+function AddRec(props) {
   const [toggleFetch, setToggleFetch] = useState(false);
 
   //set state for basic book recommendation information
@@ -38,13 +38,13 @@ function AddRec() {
   const [customAuthorTagType, setCustomAuthorTagType] = useState("");
 
   //set state for temporary and final inputs - themeTag selection
-  const [currentThemeTag, setCurrentThemeTag] = useState([]);
-  const [finalThemeTags, setFinalThemeTags] = useState([]);
+  const [currentThemeTags, setCurrentThemeTags] = useState("");
+  const [finalThemeTags, setFinalThemeTags] = useState("");
   const [selectedThemeTags, setSelectedThemeTags] = useState([]);
 
   //set state for temporary and final inputs - triggerWarning selection
-  const [currentTriggerWarning, setCurrentTriggerWarning] = useState([]);
-  const [finalTriggerWarnings, setFinalTriggerWarnings] =useState([]);
+  const [currentTriggerWarnings, setCurrentTriggerWarnings] = useState("");
+  const [finalTriggerWarnings, setFinalTriggerWarnings] =useState("");
   const [selectedTriggerWarnings, setSelectedTriggerWarnings] = useState([]);
 
   //set state for visibility of dropdown menus and submenus for checklists
@@ -95,10 +95,67 @@ function AddRec() {
     fetchAuthorTags();
   }, [toggleFetch]);
 
+  //handle recommendation submission
+  //check if book already exists in database
+  //if not, add book to database
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const url = `${baseURL}/books`;
+
+    const bookGenres = genreList.filter((genre)=>selectedGenres.includes(genre.fields.genre));
+    console.log(selectedGenres);
+    console.log(bookGenres);
+    const bookGenresByID = bookGenres.map((genre)=>genre.id);
+    console.log(bookGenresByID);
+    setFinalBookGenres([...finalBookGenres, ...bookGenresByID]);
+    console.log(finalBookGenres);
+
+    let bookRepTags = repTagList.filter((tag)=>selectedRepTags.includes(tag.fields.repTag));
+    bookRepTags = bookRepTags.map((tag)=>tag.id);
+    setFinalBookRepTags([...finalBookRepTags, ...bookRepTags]);
+    
+
+    let bookAuthorTags = authorTagList.filter((tag)=>selectedAuthorTags.includes(tag.fields.repTag));
+    bookAuthorTags = bookAuthorTags.map((tag)=>tag.id);
+    setFinalBookAuthorTags([...finalBookAuthorTags, ...bookAuthorTags]);
+
+    const previousThemeTags = finalThemeTags.split(", ");
+    const finalThemeTagsArray = [...previousThemeTags, ...selectedThemeTags];
+    setFinalThemeTags(finalThemeTagsArray.join(", "));
+
+    const previousTriggerWarnings = finalTriggerWarnings.split(", ");
+    const finalTriggerWarningsArray = [...previousTriggerWarnings, ...selectedTriggerWarnings];
+    setFinalTriggerWarnings(finalTriggerWarningsArray.join(", "));
+    
+
+    const bookID = author.replaceAll(" ","").toLowerCase() + ":" + title.replaceAll(" ", "").toLowerCase();
+    const found = props.bookList.find((book)=>book.fields.id===bookID);
+
+    if(found) {
+      console.log(found);
+    } else {
+      const newBook = {
+        author,
+        title,
+        description,
+        imageURL,
+        genres : finalBookGenres,
+        repTags: finalBookRepTags,
+        authorTags: finalBookAuthorTags,
+        themeTags: finalThemeTags,
+        triggerWarnings: finalTriggerWarnings,
+        recBy: recAuthor,
+        reviews: [],
+      }
+      await axios.post(url, { fields: newBook }, config);
+    }
+
+  }
+
   //adds new genre to genre table if user enters custom genre that is not already in the table
-  const addGenre = async() => {
+  const addGenre = async(genreToAdd) => {
     const url=`${baseURL}/genres`
-    const genre = customGenre;
+    const genre = genreToAdd.toLowerCase();
     const parentGenre = customGenreType;
     const newGenre = { 
       genre,
@@ -113,13 +170,85 @@ function AddRec() {
   const checkGenre = (e) => {
     e.preventDefault();
     const genresByName=genreList.map((genre)=>genre.fields.genre);
-    if(genresByName.includes(customGenre)) {
-      setSelectedGenres([...selectedGenres, customGenre]);
-    } else {
-      setSelectedGenres([...selectedGenres, customGenre]);
-      addGenre();
-    }
+    const customGenreLower = customGenre.toLowerCase();
+    setSelectedGenres([...selectedGenres, customGenreLower]);
+      setCustomGenre("");
+    if(!genresByName.includes(customGenreLower)) {
+      addGenre(customGenreLower);
+    } 
   }
+
+  //adds new authorTag to authorTag table if user enters custom tag that is not already in the table
+  const addAuthorTag = async(tagToAdd) => {
+    const url=`${baseURL}/authorTags`
+    const authorTag = tagToAdd.toLowerCase();
+    const typeOfTag = parseInt(customAuthorTagType);
+    const newAuthorTag = {
+      authorTag,
+      typeOfTag,
+    }
+    await axios.post(url, { fields: newAuthorTag }, config);
+    setToggleFetch((curr)=>!curr);
+  }
+
+  //check if user-entered custom authorTag already exists in authorTag table,
+  //call function to add tag if not
+  const checkAuthorTag = (e) => {
+    e.preventDefault();
+    const authorTagsByTag = authorTagList.map((tag)=>tag.fields.authorTag);
+    const customATLower = customAuthorTag.toLowerCase();
+    setSelectedAuthorTags([...selectedAuthorTags, customATLower]);
+    setCustomAuthorTag("");
+    if(!authorTagsByTag.includes(customATLower)) {
+      addAuthorTag(customATLower);
+    } 
+  }
+
+    //adds new repTag to repTag table if user enters custom tag that is not already in the table
+    const addRepTag = async(tagToAdd) => {
+      const url=`${baseURL}/repTags`
+      const repTag = tagToAdd.toLowerCase();
+      const typeOfTag = parseInt(customRepTagType);
+      const newRepTag = {
+        repTag,
+        typeOfTag,
+      }
+      await axios.post(url, { fields: newRepTag }, config);
+      setToggleFetch((curr)=>!curr);
+    }
+  
+    //check if user-entered custom repTag already exists in repTags table,
+    //call function to add tag if not
+    const checkRepTag = (e) => {
+      e.preventDefault();
+      const repTagsByTag = repTagList.map((tag)=>tag.fields.repTag);
+      const customRTLower = customRepTag.toLowerCase();
+      setSelectedRepTags([...selectedRepTags, customRTLower]);
+      setCustomRepTag("");
+      if(!repTagsByTag.includes(customRTLower)) {
+        addRepTag(customRTLower);
+      } 
+    }
+
+    //adds user-entered theme tags to book's list of theme tags
+    const addToThemeTags = () => {
+      let tagsToAdd = currentThemeTags.replaceAll("#", "");
+      tagsToAdd = tagsToAdd.toLowerCase();
+      const tagsArray = tagsToAdd.split(",");
+      const tagsArrayTrimmed = tagsArray.map((tag)=>tag.trim());
+      const tagsToAddList = tagsArrayTrimmed.map((tag)=>`#${tag}`);
+      setSelectedThemeTags([...selectedThemeTags, ...tagsToAddList]);
+    }
+
+    //adds user-entered trigger warnings to book's list of trigger warnings
+    const addToTriggerWarnings = () => {
+      let tagsToAdd = currentTriggerWarnings.replaceAll("#", "");
+      tagsToAdd = tagsToAdd.toLowerCase();
+      const tagsArray = tagsToAdd.split(",");
+      const tagsArrayTrimmed = tagsArray.map((tag)=>tag.trim());
+      const tagsToAddList = tagsArrayTrimmed.map((tag)=>`#${tag}`);
+      setSelectedTriggerWarnings([...selectedTriggerWarnings, ...tagsToAddList]);
+    }
   
 
   //toggles visibilty for genre selection section
@@ -323,7 +452,7 @@ function AddRec() {
       return (
         <ul className="submenus-ul">
           <li className="submenus-li">
-            <button className="tag-selection-sub-button" 
+            <button type="button" className="tag-selection-sub-button" 
               onClick={(e)=>{
                 e.preventDefault();
                 setFictionSelectionVisibility((curr)=>!curr);
@@ -332,7 +461,7 @@ function AddRec() {
               {fictionGenresList.map((genre)=>(
                 <li className="selection-tag" key={genre.id}>
                   <input type="checkbox" id={genre.id} name="genre-select"
-                  value={genre.fields.genre} onChange={handleGenreSelection} selected={selectedGenres.includes(genre.fields.genre)}/>
+                  value={genre.fields.genre} onChange={handleGenreSelection} checked={selectedGenres.includes(genre.fields.genre)}/>
                   <label htmlFor={genre.id}>{genre.fields.genre}</label>
                 </li>
               ))}
@@ -340,7 +469,7 @@ function AddRec() {
           </li>
 
           <li className="submenus-li">
-            <button className="tag-selection-sub-button"
+            <button type="button" className="tag-selection-sub-button"
               onClick={(e)=>{
                 e.preventDefault();
                 setNonfictionSelectionVisibility((curr)=>!curr);
@@ -349,7 +478,8 @@ function AddRec() {
               {nonfictionGenresList.map((genre)=>(
                 <li className="selection-tag" key={genre.id}>
                   <input type="checkbox" id={genre.id} name="genre-select"
-                  value={genre.fields.genre} onChange={handleGenreSelection}/>
+                  value={genre.fields.genre} onChange={handleGenreSelection}
+                  checked={selectedGenres.includes(genre.fields.genre)}/>
                   <label htmlFor={genre.id}>{genre.fields.genre}</label>
                 </li>
               ))}
@@ -357,7 +487,7 @@ function AddRec() {
           </li>
 
           <li className="submenus-li">
-            <button className="tag-selection-sub-button"
+            <button type="button" className="tag-selection-sub-button"
               onClick={(e)=>{
                 e.preventDefault();
                 setPoetrySelectionVisibility((curr)=>!curr);
@@ -366,7 +496,8 @@ function AddRec() {
               {poetryEssayGenresList.map((genre)=>(
                 <li className="selection-tag" key={genre.id}>
                   <input type="checkbox" id={genre.id} name="genre-select"
-                  value={genre.fields.genre} onChange={handleGenreSelection}/>
+                  value={genre.fields.genre} onChange={handleGenreSelection}
+                  checked={selectedGenres.includes(genre.fields.genre)}/>
                   <label htmlFor={genre.id}>{genre.fields.genre}</label>
                 </li>
               ))}
@@ -412,7 +543,7 @@ function AddRec() {
     return (
       <ul className="submenus-ul">
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag1SelectionVisibility((curr)=>!curr);
@@ -422,7 +553,8 @@ function AddRec() {
               {authorTagsType1.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="authorTag-select"
-                  value={tag.id} onChange={handleAuthorTagSelection}/>
+                  value={tag.fields.authorTag} onChange={handleAuthorTagSelection}
+                  checked={selectedAuthorTags.includes(tag.fields.authorTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.authorTag}</label>
                 </li>
               ))}
@@ -431,7 +563,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag2SelectionVisibility((curr)=>!curr);
@@ -441,7 +573,8 @@ function AddRec() {
               {authorTagsType2.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="authorTag-select"
-                  value={tag.id} onChange={handleAuthorTagSelection}/>
+                  value={tag.fields.authorTag} onChange={handleAuthorTagSelection}
+                  checked={selectedAuthorTags.includes(tag.fields.authorTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.authorTag}</label>
                 </li>
               ))}
@@ -449,7 +582,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag3SelectionVisibility((curr)=>!curr);
@@ -459,7 +592,8 @@ function AddRec() {
               {authorTagsType3.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="authorTag-select"
-                  value={tag.id} onChange={handleAuthorTagSelection}/>
+                  value={tag.fields.authorTag} onChange={handleAuthorTagSelection}
+                  checked={selectedAuthorTags.includes(tag.fields.authorTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.authorTag}</label>
                 </li>
               ))}
@@ -467,7 +601,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag4SelectionVisibility((curr)=>!curr);
@@ -477,7 +611,8 @@ function AddRec() {
               {authorTagsType4.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="authorTag-select"
-                  value={tag.id} onChange={handleAuthorTagSelection}/>
+                  value={tag.fields.authorTag} onChange={handleAuthorTagSelection}
+                  checked={selectedAuthorTags.includes(tag.fields.authorTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.authorTag}</label>
                 </li>
               ))}
@@ -485,7 +620,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag5SelectionVisibility((curr)=>!curr);
@@ -495,7 +630,8 @@ function AddRec() {
               {authorTagsType5.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="authorTag-select"
-                  value={tag.id} onChange={handleAuthorTagSelection}/>
+                  value={tag.fields.authorTag} onChange={handleAuthorTagSelection}
+                  checked={selectedAuthorTags.includes(tag.fields.authorTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.authorTag}</label>
                 </li>
               ))}
@@ -503,7 +639,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag6SelectionVisibility((curr)=>!curr);
@@ -513,7 +649,8 @@ function AddRec() {
               {authorTagsType6.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="authorTag-select"
-                  value={tag.id} onChange={handleAuthorTagSelection}/>
+                  value={tag.fields.authorTag} onChange={handleAuthorTagSelection}
+                  checked={selectedAuthorTags.includes(tag.fields.authorTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.authorTag}</label>
                 </li>
               ))}
@@ -558,7 +695,7 @@ function AddRec() {
     return (
       <ul className="submenus-ul">
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setRepTag1SelectionVisibility((curr)=>!curr);
@@ -568,7 +705,8 @@ function AddRec() {
               {repTagsType1.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="repTag-select"
-                  value={tag.id} onChange={handleRepTagSelection}/>
+                  value={tag.fields.repTag} onChange={handleRepTagSelection}
+                  checked={selectedRepTags.includes(tag.fields.repTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.repTag}</label>
                 </li>
               ))}
@@ -576,7 +714,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setRepTag2SelectionVisibility((curr)=>!curr);
@@ -586,7 +724,8 @@ function AddRec() {
               {repTagsType2.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="repTag-select"
-                  value={tag.id} onChange={handleRepTagSelection}/>
+                  value={tag.fields.repTag} onChange={handleRepTagSelection}
+                  checked={selectedRepTags.includes(tag.fields.repTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.repTag}</label>
                 </li>
               ))}
@@ -594,7 +733,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setRepTag3SelectionVisibility((curr)=>!curr);
@@ -604,7 +743,8 @@ function AddRec() {
               {repTagsType3.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="repTag-select"
-                  value={tag.id} onChange={handleRepTagSelection}/>
+                  value={tag.fields.repTag} onChange={handleRepTagSelection}
+                  checked={selectedRepTags.includes(tag.fields.repTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.repTag}</label>
                 </li>
               ))}
@@ -612,7 +752,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setRepTag4SelectionVisibility((curr)=>!curr);
@@ -622,7 +762,8 @@ function AddRec() {
               {repTagsType4.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="repTag-select"
-                  value={tag.id} onChange={handleRepTagSelection}/>
+                  value={tag.fields.repTag} onChange={handleRepTagSelection}
+                  checked={selectedRepTags.includes(tag.fields.repTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.repTag}</label>
                 </li>
               ))}
@@ -630,7 +771,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setRepTag5SelectionVisibility((curr)=>!curr);
@@ -640,7 +781,8 @@ function AddRec() {
               {repTagsType5.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="repTag-select"
-                  value={tag.id} onChange={handleRepTagSelection}/>
+                  value={tag.fields.repTag} onChange={handleRepTagSelection}
+                  checked={selectedRepTags.includes(tag.fields.repTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.repTag}</label>
                 </li>
               ))}
@@ -648,7 +790,7 @@ function AddRec() {
         </li>
 
         <li className="submenus-li">
-          <button className="tag-selection-sub-button" 
+          <button type="button" className="tag-selection-sub-button" 
             onClick={(e)=>{
               e.preventDefault();
               setRepTag6SelectionVisibility((curr)=>!curr);
@@ -658,7 +800,8 @@ function AddRec() {
               {repTagsType6.map((tag)=> (
                 <li className="selection-tag" key={tag.id}>
                   <input type="checkbox" id={tag.id} name="repTag-select"
-                  value={tag.id} onChange={handleRepTagSelection}/>
+                  value={tag.fields.repTag} onChange={handleRepTagSelection}
+                  checked={selectedRepTags.includes(tag.fields.repTag)}/>
                   <label htmlFor={tag.id}>{tag.fields.repTag}</label>
                 </li>
               ))}
@@ -672,7 +815,7 @@ function AddRec() {
   return (
     <main>
       <h2>Make a Recommendation</h2>
-      <form id="add-rec-form">
+      <form id="add-rec-form" onSubmit={handleSubmit}>
         <fieldset id="basic-book-info">
           <label htmlFor="book-title-input">Title: </label>
           <input type="text" id="book-title-input" 
@@ -696,14 +839,9 @@ function AddRec() {
         </fieldset>
 
         <fieldset id="tag-selection-lists">
-          <ul className="currently-selected-display-ul">
-            <span>Currently Selected Genres:</span>
-              {selectedGenres.map((genre)=>(
-            <li className="currently-selected-display-li">{genre}, </li>))}
-          </ul>
 
           <section id="genre-selection-menu">
-            <button 
+            <button type="button"
               className="tag-selection-main-button"
               onClick={(e)=>{
                 e.preventDefault();
@@ -715,6 +853,7 @@ function AddRec() {
               {createGenreSelectionList()}
               <label htmlFor="genre-input-box">Other Genre:</label>
               <input type="text" id="genre-input-box" 
+                value={customGenre}
                 onChange={(e) => setCustomGenre(e.target.value)}/>
               <select name="parent-genre-select" id="parent-genre-select" 
                 onChange={(e)=>setCustomGenreType(e.target.value)}>
@@ -723,13 +862,13 @@ function AddRec() {
                 <option value="nonfiction">Nonfiction</option>
                 <option value="poetry/essay">Poetry/Essay</option>
               </select>
-              <button id="new-genre-button" className="arrow-button" onClick={checkGenre}>➡️ </button>
+              <button type="button" id="new-genre-button" 
+                className="arrow-button" onClick={checkGenre}>➡️ </button>
             </section>
           </section>
 
-
           <section id="authorTag-selection-menu">
-            <button className="tag-selection-main-button"
+            <button type="button" className="tag-selection-main-button"
               onClick={(e)=>{
                 e.preventDefault();
                 setAuthorTagSelectionVisibility((curr)=>!curr);
@@ -737,8 +876,9 @@ function AddRec() {
             <section id="authorTag-selection-submenus" className=  {setAuthorTagSectionClasses()}>
               {createAuthorTagSelectionList()}
               <label htmlFor="authorTag-input-box">Other Representation:</label>
-              <input type="text" id="authorTag-input-box"/>
-              <select name="authorTag-type-select" id="authorTag-type-select" onChange={(e)=>setCustomRepTagType(e.target.value)}>
+              <input type="text" id="authorTag-input-box"
+                value={customAuthorTag} onChange={(e)=>setCustomAuthorTag(e.target.value)}/>
+              <select name="authorTag-type-select" id="authorTag-type-select" onChange={(e)=>setCustomAuthorTagType(e.target.value)}>
                 <option disabled selected value>Select Tag Type</option>
                 <option value={1}>Racial and Ethnic Identity Representation</option>
                 <option value={2}>Sexual Orientation and Gender Representation</option>
@@ -747,12 +887,13 @@ function AddRec() {
                 <option value={5}>Neurodivergence and Mental Health Representation</option>
                 <option value={6}>Other Representation</option>
               </select>
-              <button id="new-author-tag-button" className="arrow-button">➡️ </button>
+              <button type="button" id="new-author-tag-button" 
+                className="arrow-button" onClick={checkAuthorTag}>➡️ </button>
             </section>
           </section>
 
           <section id="repTag-selection-menu">
-            <button className="tag-selection-main-button"
+            <button type="button" className="tag-selection-main-button"
               onClick={(e)=>{
                 e.preventDefault();
                 setRepTagSelectionVisibility((curr)=>!curr);
@@ -761,8 +902,9 @@ function AddRec() {
               {createRepTagSelectionList()}
 
               <label htmlFor="repTag-input-box">Other Representation:</label>
-              <input type="text" id="repTag-input-box"/>
-              <select name="repTag-type-select" id="repTag-type-select" onChange={(e)=>setCustomAuthorTagType(e.target.value)}>
+              <input type="text" id="repTag-input-box"
+                value={customRepTag} onChange={(e)=>setCustomRepTag(e.target.value)}/>
+              <select name="repTag-type-select" id="repTag-type-select" onChange={(e)=>setCustomRepTagType(e.target.value)}>
                 <option disabled selected value>Select Tag Type</option>
                 <option value={1}>Racial and Ethnic Identity Representation</option>
                 <option value={2}>Sexual Orientation and Gender Representation</option>
@@ -771,20 +913,56 @@ function AddRec() {
                 <option value={5}>Neurodivergence and Mental Health Representation</option>
                 <option value={6}>Other Representation</option>
               </select>
-              <button id="new-rep-tag-button" className="arrow-button" onClick={checkGenre}>➡️ </button>
+              <button type="button" id="new-rep-tag-button" 
+                className="arrow-button" onClick={checkRepTag}>➡️ </button>
             </section>
           </section>
 
           <section id="theme-and-trigger-input-section">
+            <p>You may enter mutliple tags separated by commas</p>
             <label htmlFor="theme-tag-input">Add theme or topic tag: #</label>
-            <input type="text" id="theme-tag-input" />
-            <button>➡️ </button>
+            <input type="text" id="theme-tag-input" onChange={(e)=>setCurrentThemeTags(e.target.value)}/>
+            <button type="button" onClick={addToThemeTags}>➡️ </button>
 
             <label htmlFor="trigger-warning-input">Add trigger warning: </label>
-            <input type="text" id="trigger-warning-input"/>
-            <button>➡️ </button>
+            <input type="text" id="trigger-warning-input" onChange={(e)=> setCurrentTriggerWarnings(e.target.value)}/>
+            <button type="button" onClick={addToTriggerWarnings}>➡️ </button>
+          </section>
+
+          <section id="current-tag-selections-lists">
+            <p>Current Tag Selections</p>
+            <ul className="currently-selected-display-ul">
+              <span>Genres:</span>
+                {selectedGenres.map((genre)=>(
+              <li key={genre} className="currently-selected-display-li">{genre}, </li>))}
+            </ul>
+
+            <ul className="currently-selected-display-ul">
+              <span>Author Tags:</span>
+                {selectedAuthorTags.map((tag)=>(
+              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+            </ul>
+
+            <ul className="currently-selected-display-ul">
+              <span>Representation Tags:</span>
+                {selectedRepTags.map((tag)=>(
+              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+            </ul>
+
+            <ul className="currently-selected-display-ul">
+              <span>Theme/Topic Tags:</span>
+                {selectedThemeTags.map((tag)=>(
+              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+            </ul>
+
+            <ul className="currently-selected-display-ul">
+              <span>Trigger Warnings:</span>
+                {selectedTriggerWarnings.map((tag)=>(
+              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+            </ul>
           </section>
         </fieldset>
+        <button type="submit">Submit</button>
       </form>
     </main>
   )
