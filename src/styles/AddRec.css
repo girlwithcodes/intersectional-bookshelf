@@ -1,24 +1,49 @@
 button {
   background: none;
+  border: none;
+  margin: 0;
+  font-family: 'Comfortaa', cursive;
 }
 fieldset {
   border: none;
+}
+
+h2 {
+  text-align: center;
+}
+
+main {
+  font-family: 'Comfortaa', cursive;
+  width: 100vw;
 }
 
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 .currently-selected-display-ul {
   display: flex;
   flex-direction: row;
+  width: 60vw;
+  min-width: 350px;
+}
+
+.selection-tag {
+  width: 20vw;
+  min-width: 200px;
+}
+
+.submenus-ul {
+  margin: 0;
+  padding: 2vh 0;
 }
 
 .tag-selection-dropdown {
   display: block;
-  width: 50vw;
+  width: 60vw;
   min-width: 350px;
-  background-color: rgb(255, 191, 151);
+  margin: 0;
 }
 
 .tag-selection-dropdown.invisible {
@@ -27,19 +52,35 @@ ul {
 }
 
 .tag-selection-main-button {
-  width: 30vw;
+  width: 60vw;
+  height: 6vh;
   min-width: 350px;
-  margin: 1vh;
+  margin-top: 1vh;
+  margin-bottom: 0;
+  background-color: rgb(48, 179, 155);
+  font-size: 18px;
+  color: white;
 }
 
 .tag-selection-sub-button {
-  width: 25vw;
-  margin: 1vh;
+  width: 60vw;
+  height: 5vh;
+  margin: 0;
   min-width: 350px;
+  background-color: rgb(156, 242, 221);
+  border-bottom: 1px solid rgb(68, 179, 151);
+
+  /* border-bottom: 1px solid gray; */
+
 }
 
 .tag-selection-sub-dropdown {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+  background-color: rgb(217, 255, 245);
+
 }
 
 .tag-selection-sub-dropdown.invisible {
@@ -47,23 +88,93 @@ ul {
 }
 
 #add-rec-form {
-  width: 80vw;
-  min-width: 415px;
+  background-color: rgb(217, 255, 245);
   margin: 0 auto;
+
+}
+
+#authorTag-selection-menu {
+  background-color: rgb(156, 242, 221);
+  width: 60vw;
+}
+
+#add-rec-form {
+  width: 80vw;
+  min-width: 350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Comfortaa', cursive;
 }
 
 #basic-book-info {
   display: flex;
   flex-direction: column;
+  width: 60vw;
+}
+
+#current-tag-selections-lists {
+  border: 1px solid rgb(86, 182, 158);
+  background-color: white;
+  color: rgb(51, 136, 115);
+  min-width: 340px;
+}
+
+#current-tags-title {
+  text-align: center;
+}
+
+#genre-selection-menu {
+  width: 60vw;
+}
+
+#genre-selection-submenus {
+  margin: 0;
+  background-color: rgb(156, 242, 221);
+
+}
+
+#repTag-selection-menu {
+  background-color: rgb(156, 242, 221);
+  width: 60vw;
+}
+
+#submit-rec-button {
+  background-color:  rgb(86, 182, 158);
+  height: 5vh;
+  width: 10vw;
+  min-width: 200px;
+  color: white;
+  margin: 0 auto;
 }
 
 #tag-selection-lists {
-  margin: 1vh;
+  width: 60vw;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-
+  justify-content: center;
+  align-items: center;
+  
 }
 
 #theme-and-trigger-input-section {
   margin: 2vh 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 500px) {
+  #tag-selection-lists {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+  }
+
 }

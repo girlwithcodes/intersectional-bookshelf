@@ -459,7 +459,7 @@ function AddRec(props) {
               onClick={(e)=>{
                 e.preventDefault();
                 setFictionSelectionVisibility((curr)=>!curr);
-                }}>Fiction Genres</button>
+                }}>Fiction Genres ⬇️</button>
             <ul className={setFictionSectionClasses()} id="genre-fiction-selection-list">
               {fictionGenresList.map((genre)=>(
                 <li className="selection-tag" key={genre.id}>
@@ -476,7 +476,7 @@ function AddRec(props) {
               onClick={(e)=>{
                 e.preventDefault();
                 setNonfictionSelectionVisibility((curr)=>!curr);
-                }}>Nonfiction Genres</button>
+                }}>Nonfiction Genres ⬇️</button>
             <ul className={setNonfictionSectionClasses()} id="genre-nonfiction-selection-list">
               {nonfictionGenresList.map((genre)=>(
                 <li className="selection-tag" key={genre.id}>
@@ -494,7 +494,7 @@ function AddRec(props) {
               onClick={(e)=>{
                 e.preventDefault();
                 setPoetrySelectionVisibility((curr)=>!curr);
-                }}>Poetry/Essay Genres</button>
+                }}>Poetry/Essay Genres ⬇️</button>
             <ul className={setPoetrySectionClasses()} id="genre-poetry-essay-selection-list">
               {poetryEssayGenresList.map((genre)=>(
                 <li className="selection-tag" key={genre.id}>
@@ -933,7 +933,7 @@ function AddRec(props) {
           </section>
 
           <section id="current-tag-selections-lists">
-            <p>Current Tag Selections</p>
+            <h4 id="current-tags-title">Current Tag Selections</h4>
             <ul className="currently-selected-display-ul">
               <span>Genres:</span>
                 {selectedGenres.map((genre)=>(
@@ -965,7 +965,7 @@ function AddRec(props) {
             </ul>
           </section>
         </fieldset>
-        <button type="submit">Submit</button>
+        <button type="submit" id="submit-rec-button">Submit</button>
       </form>
     </main>
   )
