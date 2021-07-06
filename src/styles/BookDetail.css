@@ -1,10 +1,80 @@
 
+.book-image-desc-div {
+  width: 96vw;
+  min-width: 96vw;
+  margin: 1vh 2vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .book-description-div {
   overflow-y: auto;
 }
 
+.book-tag-display-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 5px;
+}
+
+.display-tag-item {
+  border:1px solid rgb(68, 179, 151);
+  height: fit-content;
+  padding: 2px 10px;
+  margin: 2px 5px;
+  font-size: 14px;
+}
+.review {
+  background-color: rgb(217, 255, 245);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 2vh 1vw;
+  padding: 2vh 2vw;
+  width: 95%;
+}
+
+.review-comment-section {
+  background-color: white;
+  padding: 1vh 2vw;
+  width: 95%;
+}
+
+.review-list-div {
+  width: 96vw;
+}
+
+.reviewer-info-section {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 2vh 0;
+}
+
+.reviewer-pic-name {
+  margin: 1vh 1vw;
+}
+
 .review-profile-pic {
   max-width: 50px;
+}
+
+.review-ratings-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: white;
+  margin: 1vh 0;
 }
 
 #author-name-span {
@@ -12,32 +82,35 @@
 }
 
 #book-description {
-  max-height: 40vh;
-  width: 40vw;
+  max-height: 50vh;
+  width: 60vw;
   margin: 1vh 2vw;
+  background-color: white;
+  padding: 10px;
 }
 
-.book-image-tag-div {
-  width: 96vw;
-  min-width: 96vw;
-  margin: 1vh 2vw;
-  background: yellow;
+#book-detail-main {
   display: flex;
-  flex-direction: row;
-  justify-content: start;
-  flex-wrap: wrap;
-
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 96vw;
 }
 
 #book-cover-img {
   width: 15vw;
   min-width: 200px;
   padding: 1vh;
-  background: red;
+  background: rgb(68, 179, 151);
 }
 
+
 #rep-author-tag-div {
-  margin: 5vh 2vw;
+  border: 1px solid rgb(68, 179, 151);
+  margin: 2vh 4vw 5vh 2vw;
+  padding: 1vh 1vw;
+  width: 95vw;
+  min-width: 320px;
 }
 
 @media screen and (max-width: 412px) {

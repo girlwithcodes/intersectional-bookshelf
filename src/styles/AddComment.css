@@ -1,13 +1,35 @@
+.review-header-div{
+  display: flex;
+  flex-direction: row;
+}
+
 #add-comment-form label {
-  display: inline-block;
-  width: 8vw;
-  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   margin: 1vh 0.5vw;
 }
 
 #add-comment-form {
-  background-color: grey;
-  width: 46vw;
-  min-width: 500px;
+  background-color: rgb(217, 255, 245);
+  font-weight: 700;
+  width: 80vw;
+  min-width: 350px;
   margin: 2vh 1vw;
+}
+
+#comment-input {
+  width: 75vw;
+  margin: 1vh 2vw;
+}
+
+
+#review-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 1vh 1vw;
 }

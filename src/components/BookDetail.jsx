@@ -45,7 +45,7 @@ function BookDetail(props) {
             <ul className="book-tag-display-list">
               <span>author representation tags: </span>
               {authorTags.map((tag) => (
-                <li key={authorTags.indexOf(tag)}className="author-tag-item">
+                <li key={authorTags.indexOf(tag)}className="display-tag-item">
                   {tag} 
                 </li>
               ))}
@@ -67,7 +67,7 @@ function BookDetail(props) {
             <ul className="book-tag-display-list">
               <span>representation tags: </span>
               {repTags.map((tag) => (
-                <li key={repTags.indexOf(tag)}className="rep-tag-item">
+                <li key={repTags.indexOf(tag)}className="display-tag-item">
                   {tag} 
                 </li>
               ))}
@@ -90,7 +90,7 @@ function BookDetail(props) {
             <ul className="book-tag-display-list">
               <span>theme and topic tags: </span>
               {themeTags.map((tag) => (
-                <li key={themeTags.indexOf(tag)}className="theme-tag-item">
+                <li key={themeTags.indexOf(tag)}className="display-tag-item">
                   {tag} 
                 </li>
               ))}
@@ -113,7 +113,7 @@ function BookDetail(props) {
               <ul className="book-tag-display-list">
                 <span>trigger warnings:</span>
                 {triggerWarnings.map((tag) => (
-                  <li key={triggerWarnings.indexOf(tag)}className="trigger-tag-item">
+                  <li key={triggerWarnings.indexOf(tag)}className="display-tag-item">
                     {tag} 
                   </li>
                 ))}
@@ -123,7 +123,7 @@ function BookDetail(props) {
             return (
               <ul className="book-tag-display-list"> 
               <span>trigger warnings: </span>
-              <li>none found</li>
+              <li> none found</li>
             </ul>
             )
           }
@@ -141,10 +141,17 @@ function BookDetail(props) {
         <section id="ratings-reviews-section">
           {reviewList.map((review)=>(
             <article key={review.id} className = "review">
-              <p><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.fields.author}</p>
-              <p><span>Representation Rating: {review.fields.repRating} / 5</span>
-              <span>Overall Rating: {review.fields.enjoymentRating} / 5</span></p>
-              <p>{review.fields.comment}</p>
+              <section className="reviewer-info-section">
+                <p className="reviewer-pic-name"><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.fields.author}</p>
+                <section className="review-ratings-section">
+                  <p>Representation Rating: {review.fields.repRating} / 5</p>
+                  <p>Overall Rating: {review.fields.enjoymentRating} / 5</p>
+                </section>
+              </section>
+
+              <section className="review-comment-section">
+                <p>{review.fields.comment}</p>
+              </section>
             </article>
           ))}
 
@@ -161,9 +168,9 @@ function BookDetail(props) {
 
   if(book && Object.keys(book).length!==0){
     return (
-      <main>
+      <main id="book-detail-main">
         <h3>{book.fields.title}<span id="author-name-span"> by {book.fields.author}</span></h3>
-        <div className="book-image-tag-div">
+        <div className="book-image-desc-div">
           <img src={book.fields.imageURL} id ="book-cover-img" alt={`${book.fields.title} front cover image`}/>
           <div className="book-description-div" id="book-description">
           <p>{book.fields.description}</p>
@@ -178,6 +185,7 @@ function BookDetail(props) {
         </div>
 
         <div id="comment-form-div">
+          <h3>Add Comment</h3>
           <AddComment setToggleFetch={props.setToggleFetch} bookID = {bookID}/>
         </div>
 
