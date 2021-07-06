@@ -68,7 +68,7 @@ function App() {
         <SearchBrowse bookList={bookList} setSearchObject={setSearchObject} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
-      <Route path="/browseResults/:id">
+      <Route path="/browseResults/:tagType?/:id">
         <BrowseResults bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
@@ -77,11 +77,11 @@ function App() {
       </Route>
 
       <Route path="/bookDetail/:id">
-        <BookDetail bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
+        <BookDetail bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList} toggleFetch={toggleFetch} setToggleFetch={setToggleFetch}/>
       </Route>
 
       <Route path="/recommend/:type">
-        <AddRec bookList={bookList} setToggleFetch={setToggleFetch} />
+        <AddRec bookList={bookList} setToggleFetch={setToggleFetch} toggleFetch={toggleFetch}/>
       </Route>
 
       <Footer />

@@ -12,18 +12,14 @@ function BookDetail(props) {
   const [toggleFetch, setToggleFetch] = useState(false);
   const params = useParams();
   const bookID = params.id;
-  console.log(bookID);
+  
 
   useEffect(()=>{
     
     const fetchReviews = async() => {
       if(book) {
-        // const query = "?filterByFormula=";
-        // const filterBy = `SEARCH(${bookID}, {bookID})`;
         const url = `${baseURL}/reviews/`;
-        console.log(url);
         const resp = await axios.get(url, config);
-        console.log(resp.data.records);
         setReviews(resp.data.records);
       }
       
@@ -33,11 +29,12 @@ function BookDetail(props) {
       const url = `${baseURL}/books/${bookID}`;
       const resp = await axios.get(url, config);
       setBook(resp.data);
-      fetchReviews();
+      
     }
-    
     fetchBook();
-  },[toggleFetch]);
+    fetchReviews();
+
+  },[props.toggleFetch]);
 
   const createTagList = (typeOfTag) => {
     switch(typeOfTag) {
@@ -87,8 +84,8 @@ function BookDetail(props) {
       break;
 
       case "theme":
-        const themeTags = book.fields.themeTags.split(", ");
-        if(themeTags && themeTags.length!==0) {
+        if(book.fields.themeTags && book.fields.themeTags.length!==0) {
+          const themeTags = book.fields.themeTags.split(", ");
           return (
             <ul className="book-tag-display-list">
               <span>theme and topic tags: </span>
@@ -110,26 +107,26 @@ function BookDetail(props) {
         break;
 
         case "trigger":
-          const triggerWarnings = book.fields.triggerWarnings.split(", ");
-        if(triggerWarnings && triggerWarnings.length!==0) {
-          return (
-            <ul className="book-tag-display-list">
-              <span>trigger warnings:</span>
-              {triggerWarnings.map((tag) => (
-                <li key={triggerWarnings.indexOf(tag)}className="trigger-tag-item">
-                  {tag} 
-                </li>
-              ))}
+          if(book.fields.triggerWarnings && book.fields.triggerWarnings.length!==0) {
+            const triggerWarnings = book.fields.triggerWarnings.split(", ");
+            return (
+              <ul className="book-tag-display-list">
+                <span>trigger warnings:</span>
+                {triggerWarnings.map((tag) => (
+                  <li key={triggerWarnings.indexOf(tag)}className="trigger-tag-item">
+                    {tag} 
+                  </li>
+                ))}
+              </ul>
+            );
+          } else {
+            return (
+              <ul className="book-tag-display-list"> 
+              <span>trigger warnings: </span>
+              <li>none found</li>
             </ul>
-          );
-        } else {
-          return (
-            <ul className="book-tag-display-list"> 
-            <span>trigger warnings: </span>
-            <li>none found</li>
-          </ul>
-          )
-        }
+            )
+          }
         break;
 
     }  
@@ -137,16 +134,17 @@ function BookDetail(props) {
 
   const listReviews = () => {
     if(book.fields.reviews && book.fields.reviews.length!==0 && reviews && reviews.length!==0){
-      // const reviewList = reviews.filter((review)=>book.fields.reviews.includes(review.id));
-      const reviewList = book.fields.reviews;
+      const reviewList = reviews.filter((review)=>book.fields.reviews.includes(review.id));
+      console.log(reviewList);
+      // const reviewList = book.fields.reviews;
       return (
         <section id="ratings-reviews-section">
           {reviewList.map((review)=>(
             <article key={review.id} className = "review">
-              <p><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.author}</p>
-              <p><span>Representation Rating: {review.repRating} / 5</span>
-              <span>Overall Rating: {review.enjoymentRating} / 5</span></p>
-              <p>{review.comment}</p>
+              <p><img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className="review-profile-pic"/>{review.fields.author}</p>
+              <p><span>Representation Rating: {review.fields.repRating} / 5</span>
+              <span>Overall Rating: {review.fields.enjoymentRating} / 5</span></p>
+              <p>{review.fields.comment}</p>
             </article>
           ))}
 
@@ -180,7 +178,7 @@ function BookDetail(props) {
         </div>
 
         <div id="comment-form-div">
-          <AddComment setToggleFetch={setToggleFetch} bookID = {bookID}/>
+          <AddComment setToggleFetch={props.setToggleFetch} bookID = {bookID}/>
         </div>
 
         <div id="review-list-div">

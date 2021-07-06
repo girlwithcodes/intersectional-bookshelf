@@ -62,7 +62,7 @@ function SearchBrowse(props) {
       <ul className="browse-by-list">
         {alphaList.map((listObject) => (
           <li key={listObject.id}>
-            <Link to={`/browseResults/${listObject.id}`}>
+            <Link to={`/browseResults/${listTermKey}/${listObject.id}`}>
               {listObject.fields[listTermKey]}
             </Link>
           </li>

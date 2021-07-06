@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { baseURL, config } from '../services';
 import '../styles/AddRec.css';
 
 function AddRec(props) {
-  const [toggleFetch, setToggleFetch] = useState(false);
+  const params = useParams();
+  const history = useHistory();
 
   //set state for basic book recommendation information
   const [title, setTitle] = useState("");
@@ -15,12 +16,12 @@ function AddRec(props) {
   const [recAuthor, setRecAuthor] = useState("");
 
   //set state for lists to retrieve from API for selection checklists
-  const [genreList, setGenreList] = useState("");
+  const [genreList, setGenreList] = useState([]);
   const [repTagList, setRepTagList] = useState([]);
   const [authorTagList, setAuthorTagList] = useState([]);
   
   //set state for temporary and final inputs - genre selection
-  const [finalBookGenres, setFinalBookGenres] = useState([]);
+  const [fnlGenres, setFnlGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [customGenre, setCustomGenre] = useState("");
   const [customGenreType, setCustomGenreType] = useState("");
@@ -93,53 +94,50 @@ function AddRec(props) {
     fetchGenres();
     fetchRepTags();
     fetchAuthorTags();
-  }, [toggleFetch]);
+  }, [props.toggleFetch]);
+
+  useEffect (()=>{
+    const setFields = () => {
+      const bookGenres = genreList.filter((genre)=>selectedGenres.includes(genre.fields.genre));
+      const bookGenresByID = bookGenres.map((genre)=>genre.id);
+      console.log(bookGenresByID);
+      setFnlGenres([...bookGenresByID]);
+      console.log(fnlGenres);
+  
+      let bookRepTags = repTagList.filter((tag)=>selectedRepTags.includes(tag.fields.repTag));
+      bookRepTags = bookRepTags.map((tag)=>tag.id);
+      setFinalBookRepTags([...bookRepTags]);
+      
+      let bookAuthorTags = authorTagList.filter((tag)=>selectedAuthorTags.includes(tag.fields.authorTag));
+      bookAuthorTags = bookAuthorTags.map((tag)=>tag.id);
+      setFinalBookAuthorTags([...bookAuthorTags]);
+  
+      setFinalThemeTags(selectedThemeTags.join(", "));
+  
+      setFinalTriggerWarnings(selectedTriggerWarnings.join(", "));
+    }
+    setFields();
+  },[selectedGenres, selectedRepTags, selectedAuthorTags, selectedThemeTags, selectedTriggerWarnings, props.toggleFetch]);
 
   //handle recommendation submission
   //check if book already exists in database
   //if not, add book to database
   const handleSubmit = async(e) => {
     e.preventDefault();
-    const url = `${baseURL}/books`;
-
-    const bookGenres = genreList.filter((genre)=>selectedGenres.includes(genre.fields.genre));
-    console.log(selectedGenres);
-    console.log(bookGenres);
-    const bookGenresByID = bookGenres.map((genre)=>genre.id);
-    console.log(bookGenresByID);
-    setFinalBookGenres([...finalBookGenres, ...bookGenresByID]);
-    console.log(finalBookGenres);
-
-    let bookRepTags = repTagList.filter((tag)=>selectedRepTags.includes(tag.fields.repTag));
-    bookRepTags = bookRepTags.map((tag)=>tag.id);
-    setFinalBookRepTags([...finalBookRepTags, ...bookRepTags]);
-    
-
-    let bookAuthorTags = authorTagList.filter((tag)=>selectedAuthorTags.includes(tag.fields.repTag));
-    bookAuthorTags = bookAuthorTags.map((tag)=>tag.id);
-    setFinalBookAuthorTags([...finalBookAuthorTags, ...bookAuthorTags]);
-
-    const previousThemeTags = finalThemeTags.split(", ");
-    const finalThemeTagsArray = [...previousThemeTags, ...selectedThemeTags];
-    setFinalThemeTags(finalThemeTagsArray.join(", "));
-
-    const previousTriggerWarnings = finalTriggerWarnings.split(", ");
-    const finalTriggerWarningsArray = [...previousTriggerWarnings, ...selectedTriggerWarnings];
-    setFinalTriggerWarnings(finalTriggerWarningsArray.join(", "));
-    
-
+    props.setToggleFetch((curr)=>!curr);
     const bookID = author.replaceAll(" ","").toLowerCase() + ":" + title.replaceAll(" ", "").toLowerCase();
     const found = props.bookList.find((book)=>book.fields.id===bookID);
 
     if(found) {
-      console.log(found);
+      history.push(`/bookDetail/${found.id}`);
     } else {
+      const url = `${baseURL}/books`;
       const newBook = {
         author,
         title,
         description,
         imageURL,
-        genres : finalBookGenres,
+        genres : fnlGenres,
         repTags: finalBookRepTags,
         authorTags: finalBookAuthorTags,
         themeTags: finalThemeTags,
@@ -147,7 +145,11 @@ function AddRec(props) {
         recBy: recAuthor,
         reviews: [],
       }
-      await axios.post(url, { fields: newBook }, config);
+      const resp = await axios.post(url, { fields: newBook }, config);
+      const newBookID = resp.data.id;
+      setTimeout(()=>{
+        history.push(`/bookDetail/${newBookID}`);
+      }, 300);
     }
 
   }
@@ -162,7 +164,7 @@ function AddRec(props) {
       parentGenre,
     }
     await axios.post(url, {fields: newGenre}, config);
-    setToggleFetch((curr)=>!curr);
+    props.setToggleFetch((curr)=>!curr);
   }
   
   //check if user-entered custom genre already exists in genre table,
@@ -188,7 +190,7 @@ function AddRec(props) {
       typeOfTag,
     }
     await axios.post(url, { fields: newAuthorTag }, config);
-    setToggleFetch((curr)=>!curr);
+    props.setToggleFetch((curr)=>!curr);
   }
 
   //check if user-entered custom authorTag already exists in authorTag table,
@@ -214,7 +216,7 @@ function AddRec(props) {
         typeOfTag,
       }
       await axios.post(url, { fields: newRepTag }, config);
-      setToggleFetch((curr)=>!curr);
+      props.setToggleFetch((curr)=>!curr);
     }
   
     //check if user-entered custom repTag already exists in repTags table,
@@ -238,6 +240,7 @@ function AddRec(props) {
       const tagsArrayTrimmed = tagsArray.map((tag)=>tag.trim());
       const tagsToAddList = tagsArrayTrimmed.map((tag)=>`#${tag}`);
       setSelectedThemeTags([...selectedThemeTags, ...tagsToAddList]);
+      setCurrentThemeTags("");
     }
 
     //adds user-entered trigger warnings to book's list of trigger warnings
@@ -248,9 +251,9 @@ function AddRec(props) {
       const tagsArrayTrimmed = tagsArray.map((tag)=>tag.trim());
       const tagsToAddList = tagsArrayTrimmed.map((tag)=>`#${tag}`);
       setSelectedTriggerWarnings([...selectedTriggerWarnings, ...tagsToAddList]);
+      setCurrentTriggerWarnings("");
     }
   
-
   //toggles visibilty for genre selection section
   const setGenreSectionClasses = () => {
     if(genreSelectionVisibility) {

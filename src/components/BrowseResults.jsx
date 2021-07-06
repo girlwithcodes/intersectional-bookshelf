@@ -5,8 +5,9 @@ function BrowseResults(props) {
   const params = useParams();
   const browseByID = params.id;
   const bookList = props.bookList;
-  console.log(bookList);
-  const bookMatches = bookList.filter((book)=>book.fields.genres.includes(browseByID));
+  console.log(params);
+  const bookMatches = params.tagType==="genre"? bookList.filter((book)=>book.fields.genres.includes(browseByID)) : params.tagType==="repTag" ? bookList.filter((book)=>book.fields.repTags.includes(browseByID)) : bookList.filter((book)=>book.fields.authorTags.includes(browseByID));
+
   console.log(bookMatches);
 
   const createTagList = (book, typeOfTag) => {
