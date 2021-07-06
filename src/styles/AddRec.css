@@ -22,11 +22,22 @@ ul {
   padding: 0;
 }
 
+.currently-selected-display-li {
+  margin: 0 4px;
+  border:1px solid rgb(120, 222, 196);
+  padding: 0 3px;
+}
+
 .currently-selected-display-ul {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 60vw;
   min-width: 350px;
+}
+
+.current-theme-trigger-li:hover{
+  text-decoration: line-through;
 }
 
 .selection-tag {
@@ -90,12 +101,17 @@ ul {
 #add-rec-form {
   background-color: rgb(217, 255, 245);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
 }
 
 #authorTag-selection-menu {
+  margin: 0 auto;
   background-color: rgb(156, 242, 221);
-  width: 60vw;
+  text-align: center;
 }
 
 #add-rec-form {
@@ -127,18 +143,20 @@ ul {
 }
 
 #genre-selection-menu {
-  width: 60vw;
+  margin: 0 auto;
+  text-align: center;
 }
 
 #genre-selection-submenus {
-  margin: 0;
+  margin: 0 auto;
   background-color: rgb(156, 242, 221);
 
 }
 
 #repTag-selection-menu {
+  margin: 0 auto;
   background-color: rgb(156, 242, 221);
-  width: 60vw;
+  text-align: center;
 }
 
 #submit-rec-button {
@@ -147,7 +165,8 @@ ul {
   width: 10vw;
   min-width: 200px;
   color: white;
-  margin: 0 auto;
+  margin: 1vh auto;
+  font-weight: 700;
 }
 
 #tag-selection-lists {
@@ -169,12 +188,10 @@ ul {
 }
 
 @media screen and (max-width: 500px) {
-  #tag-selection-lists {
+  #tag-selection-dropdowns {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 0;
     padding: 0;
   }
-
 }

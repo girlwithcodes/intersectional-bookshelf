@@ -5,6 +5,7 @@ import Nav from './components/Nav';
 import Home from './components/Home';
 import SearchBrowse from './components/SearchBrowse';
 import SearchResults from './components/SearchResults';
+import KeywordSearchResults from './components/KeywordSearchResults';
 import BrowseResults from './components/BrowseResults';
 import BookDetail from './components/BookDetail';
 import AddRec from './components/AddRec';
@@ -74,6 +75,10 @@ function App() {
 
       <Route path="/searchResults">
         <SearchResults searchObject={searchObject} bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
+      </Route>
+
+      <Route path="/keywordSearchResults/:term">
+        <KeywordSearchResults bookList={bookList} genreList={genreList} repTagList={repTagList} authorTagList={authorTagList}/>
       </Route>
 
       <Route path="/bookDetail/:id">

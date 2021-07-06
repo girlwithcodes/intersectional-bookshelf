@@ -21,31 +21,31 @@ function AddRec(props) {
   const [authorTagList, setAuthorTagList] = useState([]);
   
   //set state for temporary and final inputs - genre selection
-  const [fnlGenres, setFnlGenres] = useState([]);
+  const [initialGenres, setInitialGenres] = useState([]);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [customGenre, setCustomGenre] = useState("");
   const [customGenreType, setCustomGenreType] = useState("");
 
   //set state for temporary and final inputs - repTag selection
-  const [finalBookRepTags, setFinalBookRepTags] = useState([]);
+  const [initialRepTags, setInitialRepTags] = useState([]);
   const [selectedRepTags, setSelectedRepTags] = useState([]);
   const [customRepTag, setCustomRepTag] = useState("");
   const [customRepTagType, setCustomRepTagType] = useState("");
 
   //set state for temporary and final inputs - authorTag selection
-  const [finalBookAuthorTags, setFinalBookAuthorTags]= useState([]);
+  const [initialAuthorTags, setInitialAuthorTags]= useState([]);
   const [selectedAuthorTags, setSelectedAuthorTags] = useState([]);
   const [customAuthorTag, setCustomAuthorTag] = useState("");
   const [customAuthorTagType, setCustomAuthorTagType] = useState("");
 
   //set state for temporary and final inputs - themeTag selection
   const [currentThemeTags, setCurrentThemeTags] = useState("");
-  const [finalThemeTags, setFinalThemeTags] = useState("");
+  const [initialThemeTags, setInitialThemeTags] = useState("");
   const [selectedThemeTags, setSelectedThemeTags] = useState([]);
 
   //set state for temporary and final inputs - triggerWarning selection
   const [currentTriggerWarnings, setCurrentTriggerWarnings] = useState("");
-  const [finalTriggerWarnings, setFinalTriggerWarnings] =useState("");
+  const [initialTriggerWarnings, setInitialTriggerWarnings] =useState("");
   const [selectedTriggerWarnings, setSelectedTriggerWarnings] = useState([]);
 
   //set state for visibility of dropdown menus and submenus for checklists
@@ -96,29 +96,6 @@ function AddRec(props) {
     fetchAuthorTags();
   }, [props.toggleFetch]);
 
-  useEffect (()=>{
-    const setFields = () => {
-      const bookGenres = genreList.filter((genre)=>selectedGenres.includes(genre.fields.genre));
-      const bookGenresByID = bookGenres.map((genre)=>genre.id);
-      console.log(bookGenresByID);
-      setFnlGenres([...bookGenresByID]);
-      console.log(fnlGenres);
-  
-      let bookRepTags = repTagList.filter((tag)=>selectedRepTags.includes(tag.fields.repTag));
-      bookRepTags = bookRepTags.map((tag)=>tag.id);
-      setFinalBookRepTags([...bookRepTags]);
-      
-      let bookAuthorTags = authorTagList.filter((tag)=>selectedAuthorTags.includes(tag.fields.authorTag));
-      bookAuthorTags = bookAuthorTags.map((tag)=>tag.id);
-      setFinalBookAuthorTags([...bookAuthorTags]);
-  
-      setFinalThemeTags(selectedThemeTags.join(", "));
-  
-      setFinalTriggerWarnings(selectedTriggerWarnings.join(", "));
-    }
-    setFields();
-  },[selectedGenres, selectedRepTags, selectedAuthorTags, selectedThemeTags, selectedTriggerWarnings, props.toggleFetch]);
-
   //handle recommendation submission
   //check if book already exists in database
   //if not, add book to database
@@ -132,14 +109,31 @@ function AddRec(props) {
       history.push(`/bookDetail/${found.id}`);
     } else {
       const url = `${baseURL}/books`;
+
+      const bookGenres = genreList.filter((genre)=>selectedGenres.includes(genre.fields.genre));
+      const bookGenresByID = bookGenres.map((genre)=>genre.id);
+      const finalGenres = [...initialGenres, ...bookGenresByID];
+
+      let bookRepTags = repTagList.filter((tag)=>selectedRepTags.includes(tag.fields.repTag));
+      bookRepTags = bookRepTags.map((tag)=>tag.id);
+      const finalRepTags = [...initialRepTags, ...bookRepTags];
+
+      let bookAuthorTags = authorTagList.filter((tag)=>selectedAuthorTags.includes(tag.fields.authorTag));
+      bookAuthorTags = bookAuthorTags.map((tag)=>tag.id);
+      const finalAuthorTags = [...initialAuthorTags, ...bookAuthorTags];
+
+      const finalThemeTags = selectedThemeTags.join(", ");
+  
+      const finalTriggerWarnings = selectedTriggerWarnings.join(", ");
+      
       const newBook = {
         author,
         title,
         description,
         imageURL,
-        genres : fnlGenres,
-        repTags: finalBookRepTags,
-        authorTags: finalBookAuthorTags,
+        genres : finalGenres,
+        repTags: finalRepTags,
+        authorTags: finalAuthorTags,
         themeTags: finalThemeTags,
         triggerWarnings: finalTriggerWarnings,
         recBy: recAuthor,
@@ -241,6 +235,7 @@ function AddRec(props) {
       const tagsToAddList = tagsArrayTrimmed.map((tag)=>`#${tag}`);
       setSelectedThemeTags([...selectedThemeTags, ...tagsToAddList]);
       setCurrentThemeTags("");
+      props.setToggleFetch((curr)=>!curr);
     }
 
     //adds user-entered trigger warnings to book's list of trigger warnings
@@ -252,6 +247,7 @@ function AddRec(props) {
       const tagsToAddList = tagsArrayTrimmed.map((tag)=>`#${tag}`);
       setSelectedTriggerWarnings([...selectedTriggerWarnings, ...tagsToAddList]);
       setCurrentTriggerWarnings("");
+      props.setToggleFetch((curr)=>!curr);
     }
   
   //toggles visibilty for genre selection section
@@ -550,7 +546,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag1SelectionVisibility((curr)=>!curr);
-            }}>Racial and Ethnic Identity Tags</button>
+            }}>Race and Ethnic Identity ⬇️</button>
             <ul className={setAuthorTagSubmenu1Classes()}
             id="author-tag-type-1-selection-list">
               {authorTagsType1.map((tag)=> (
@@ -570,7 +566,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag2SelectionVisibility((curr)=>!curr);
-            }}>Sexual Orientation and Gender Identity Tags</button>
+            }}>Sexual Orientation and Gender Identity ⬇️</button>
             <ul className={setAuthorTagSubmenu2Classes()}
             id="author-tag-type-2-selection-list">
               {authorTagsType2.map((tag)=> (
@@ -589,7 +585,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag3SelectionVisibility((curr)=>!curr);
-            }}>Disability Representation Tags</button>
+            }}>Disability  ⬇️</button>
             <ul className={setAuthorTagSubmenu3Classes()}
             id="author-tag-type-3-selection-list">
               {authorTagsType3.map((tag)=> (
@@ -608,7 +604,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag4SelectionVisibility((curr)=>!curr);
-            }}>Body Positivity and Physical Form Representation Tags</button>
+            }}>Neurodivergence and Mental Health  ⬇️</button>
             <ul className={setAuthorTagSubmenu4Classes()}
             id="author-tag-type-4-selection-list">
               {authorTagsType4.map((tag)=> (
@@ -627,7 +623,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag5SelectionVisibility((curr)=>!curr);
-            }}>Neurodivergence and Mental Health Representation Tags</button>
+            }}>Body Positivity and Physical Form  ⬇️</button>
             <ul className={setAuthorTagSubmenu5Classes()}
             id="author-tag-type-5-selection-list">
               {authorTagsType5.map((tag)=> (
@@ -646,7 +642,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setAuthorTag6SelectionVisibility((curr)=>!curr);
-            }}>Other Represenation Tags</button>
+            }}>Other Represenation ⬇️</button>
             <ul className={setAuthorTagSubmenu6Classes()}
             id="author-tag-type-6-selection-list">
               {authorTagsType6.map((tag)=> (
@@ -702,7 +698,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setRepTag1SelectionVisibility((curr)=>!curr);
-            }}>Racial and Ethnic Identity Tags</button>
+            }}>Race and Ethnic Identity ⬇️</button>
             <ul className={setRepTagSubmenu1Classes()}
             id="rep-tag-type-1-selection-list">
               {repTagsType1.map((tag)=> (
@@ -721,7 +717,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setRepTag2SelectionVisibility((curr)=>!curr);
-            }}>Sexual Orientation and Gender Identity Tags</button>
+            }}>Sexual Orientation and Gender Identity ⬇️</button>
             <ul className={setRepTagSubmenu2Classes()}
             id="rep-tag-type-2-selection-list">
               {repTagsType2.map((tag)=> (
@@ -740,7 +736,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setRepTag3SelectionVisibility((curr)=>!curr);
-            }}>Disability Representation Tags</button>
+            }}>Disability  ⬇️</button>
             <ul className={setRepTagSubmenu3Classes()}
             id="rep-tag-type-3-selection-list">
               {repTagsType3.map((tag)=> (
@@ -759,7 +755,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setRepTag4SelectionVisibility((curr)=>!curr);
-            }}>Body Positivity and Physical Form Representation Tags</button>
+            }}>Neurodivergence and Mental Health  ⬇️</button>
             <ul className={setRepTagSubmenu4Classes()}
             id="rep-tag-type-4-selection-list">
               {repTagsType4.map((tag)=> (
@@ -778,7 +774,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setRepTag5SelectionVisibility((curr)=>!curr);
-            }}>Neurodivergence and Mental Health Representation Tags</button>
+            }}>Body Positivity and Physical Form Representation ⬇️</button>
             <ul className={setRepTagSubmenu5Classes()}
             id="rep-tag-type-5-selection-list">
               {repTagsType5.map((tag)=> (
@@ -797,7 +793,7 @@ function AddRec(props) {
             onClick={(e)=>{
               e.preventDefault();
               setRepTag6SelectionVisibility((curr)=>!curr);
-            }}>Other Represenation Tags</button>
+            }}>Other Represenation ⬇️</button>
             <ul className={setRepTagSubmenu6Classes()}
             id="rep-tag-type-6-selection-list">
               {repTagsType6.map((tag)=> (
@@ -814,6 +810,17 @@ function AddRec(props) {
     )
   }
 
+  const removeTag = (tagType, tagToRemove) => {
+    switch(tagType) {
+      case "theme":
+        setSelectedThemeTags(selectedThemeTags.filter((tag)=>tag!==tagToRemove));
+        break;
+      case "trigger":
+        setSelectedTriggerWarnings(selectedTriggerWarnings.filter((tag)=>tag!==tagToRemove));
+        break;
+    }
+    props.setToggleFetch((curr)=>!curr);
+  }
   //return/render add recommendation form
   return (
     <main>
@@ -841,7 +848,7 @@ function AddRec(props) {
           value={recAuthor} onChange={(e)=>setRecAuthor(e.target.value)} required />
         </fieldset>
 
-        <fieldset id="tag-selection-lists">
+        <fieldset id="tag-selection-dropdowns">
 
           <section id="genre-selection-menu">
             <button type="button"
@@ -883,11 +890,11 @@ function AddRec(props) {
                 value={customAuthorTag} onChange={(e)=>setCustomAuthorTag(e.target.value)}/>
               <select name="authorTag-type-select" id="authorTag-type-select" onChange={(e)=>setCustomAuthorTagType(e.target.value)}>
                 <option disabled selected value>Select Tag Type</option>
-                <option value={1}>Racial and Ethnic Identity Representation</option>
-                <option value={2}>Sexual Orientation and Gender Representation</option>
-                <option value={3}>Disability Representation</option>
-                <option value={4}>Body Positivity and Physical Form Representation</option>
-                <option value={5}>Neurodivergence and Mental Health Representation</option>
+                <option value={1}>Race and Ethnic Identity </option>
+                <option value={2}>Sexual Orientation and Gender Identity</option>
+                <option value={3}>Disability</option>
+                <option value={4}>Neurodivergence and Mental Health </option>
+                <option value={5}>Body Positivity and Physical Form</option>
                 <option value={6}>Other Representation</option>
               </select>
               <button type="button" id="new-author-tag-button" 
@@ -909,62 +916,65 @@ function AddRec(props) {
                 value={customRepTag} onChange={(e)=>setCustomRepTag(e.target.value)}/>
               <select name="repTag-type-select" id="repTag-type-select" onChange={(e)=>setCustomRepTagType(e.target.value)}>
                 <option disabled selected value>Select Tag Type</option>
-                <option value={1}>Racial and Ethnic Identity Representation</option>
-                <option value={2}>Sexual Orientation and Gender Representation</option>
-                <option value={3}>Disability Representation</option>
-                <option value={4}>Body Positivity and Physical Form Representation</option>
-                <option value={5}>Neurodivergence and Mental Health Representation</option>
+                <option value={1}>Race and Ethnic Identity</option>
+                <option value={2}>Sexual Orientation and Gender Identity</option>
+                <option value={3}>Disability </option>
+                <option value={4}>Neurodivergence and Mental Health </option>
+                <option value={5}>Body Positivity and Physical Form  </option>
                 <option value={6}>Other Representation</option>
               </select>
               <button type="button" id="new-rep-tag-button" 
                 className="arrow-button" onClick={checkRepTag}>➡️ </button>
             </section>
           </section>
+        </fieldset>
 
+        <fieldset id="theme-and-trigger-inputs">
           <section id="theme-and-trigger-input-section">
             <p>You may enter mutliple tags separated by commas</p>
             <label htmlFor="theme-tag-input">Add theme or topic tag: #</label>
-            <input type="text" id="theme-tag-input" onChange={(e)=>setCurrentThemeTags(e.target.value)}/>
+            <input type="text" id="theme-tag-input" value={currentThemeTags} onChange={(e)=>setCurrentThemeTags(e.target.value)}/>
             <button type="button" onClick={addToThemeTags}>➡️ </button>
 
             <label htmlFor="trigger-warning-input">Add trigger warning: </label>
-            <input type="text" id="trigger-warning-input" onChange={(e)=> setCurrentTriggerWarnings(e.target.value)}/>
+            <input type="text" id="trigger-warning-input" value={currentTriggerWarnings} onChange={(e)=> setCurrentTriggerWarnings(e.target.value)}/>
             <button type="button" onClick={addToTriggerWarnings}>➡️ </button>
           </section>
-
+        </fieldset>
           <section id="current-tag-selections-lists">
             <h4 id="current-tags-title">Current Tag Selections</h4>
             <ul className="currently-selected-display-ul">
               <span>Genres:</span>
                 {selectedGenres.map((genre)=>(
-              <li key={genre} className="currently-selected-display-li">{genre}, </li>))}
+              <li key={genre} className="currently-selected-display-li">{genre} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">
               <span>Author Tags:</span>
                 {selectedAuthorTags.map((tag)=>(
-              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+              <li key={tag} className="currently-selected-display-li">{tag} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">
               <span>Representation Tags:</span>
                 {selectedRepTags.map((tag)=>(
-              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+              <li key={tag} className="currently-selected-display-li">{tag} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">
               <span>Theme/Topic Tags:</span>
                 {selectedThemeTags.map((tag)=>(
-              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+              <li key={tag} className="currently-selected-display-li current-theme-trigger-li"
+                onClick={()=>removeTag("theme", tag)}>{tag} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">
               <span>Trigger Warnings:</span>
                 {selectedTriggerWarnings.map((tag)=>(
-              <li key={tag} className="currently-selected-display-li">{tag}, </li>))}
+              <li key={tag} className="currently-selected-display-li current-theme-trigger-li"
+                onClick={()=>removeTag("trigger", tag)}>{tag} </li>))}
             </ul>
           </section>
-        </fieldset>
         <button type="submit" id="submit-rec-button">Submit</button>
       </form>
     </main>

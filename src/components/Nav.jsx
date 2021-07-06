@@ -11,7 +11,7 @@ function Nav() {
         </li>
         <li>
           <Link to="/browse">
-            Browse
+            Search/Browse
           </Link>
         </li>
         <li>

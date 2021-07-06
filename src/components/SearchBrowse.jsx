@@ -15,12 +15,19 @@ function SearchBrowse(props) {
   const [repTagListClass, setRepTagListClass] = useState("browseList invisible");
   const [authorTagListClass, setAuthorTagListClass] = useState("browseList invisible");
 
+  const [genreTabClass, setGenreTabClass] = useState("browseLink");
+  const [repTagTabClass, setRepTagTabClass] = useState("browseLink");
+  const [authorTagTabClass, setAuthorTagTabClass] = useState("browseLink");
 
   //function to toggle visibilty On visibilty of Genre List
   const displayGenreList = () => {
     setGenreListClass("browseList");
     setRepTagListClass("browseList invisible");
     setAuthorTagListClass("browseList invisible");
+
+    setGenreTabClass("browseLink highlighted");
+    setRepTagTabClass("browseLink");
+    setAuthorTagTabClass("browseLink");
   }
 
   //function to toggle visibilty On visibilty of repTag List
@@ -28,6 +35,10 @@ function SearchBrowse(props) {
     setRepTagListClass("browseList");
     setGenreListClass("browseList invisible");
     setAuthorTagListClass("browseList invisible");
+
+    setRepTagTabClass("browseLink highlighted");
+    setGenreTabClass("browseLink");
+    setAuthorTagTabClass("browseLink");
   }
 
   //function to toggle visibilty On visibilty of authorTag List
@@ -35,6 +46,10 @@ function SearchBrowse(props) {
     setAuthorTagListClass("browseList");
     setGenreListClass("browseList invisible");
     setRepTagListClass("browseList invisible");
+
+    setAuthorTagTabClass("browseLink highlighted");
+    setRepTagTabClass("browseLink");
+    setGenreTabClass("browseLink");
   }
 
   //function to create an alphabetical list of browsable topics for an individual browse list
@@ -73,68 +88,96 @@ function SearchBrowse(props) {
 
   return (
     <main>
-      <h3>Search</h3>
-      <section id="search-section">
-        <SearchForm setSearchObject={props.setSearchObject}/>
-      </section>
-
-      <h3>Browse</h3>
+      
+      <SearchForm setSearchObject={props.setSearchObject}/>
+      
+      <h3 id="browse-section-title">Browse</h3>
       <section id="browse-by-section">
         <div id="browse-by-tabs">
-          <button className="browseLink" onClick={displayGenreList}>Browse by Genre</button>
-          <button className="browseLink" onClick={displayRepTagList}>Browse by Representation Tag</button>
-          <button className="browseLink" onClick={displayAuthorTagList}>Browse by Author Tag</button>
+          <button className={genreTabClass} onClick={displayGenreList}>Browse by Genre</button>
+          <button className={repTagTabClass} onClick={displayRepTagList}>Browse by Representation Tag</button>
+          <button className={authorTagTabClass} onClick={displayAuthorTagList}>Browse by Author Tag</button>
         </div>
 
         <div className={genreListClass} id="genre-browse-list">
+          <div>
             <h4>Fiction Genres</h4>
               {createBrowseList(genres, "parentGenre", "fiction", "genre")}
-            
+          </div>
+
+          <div>
             <h4>Nonfiction Genres</h4>
               {createBrowseList(genres, "parentGenre", "nonfiction", "genre")}
+          </div>
 
+          <div>
             <h4>Poetry/Essay Genres</h4>
               {createBrowseList(genres, "parentGenre", "poetry/essay", "genre")}
+          </div>
         </div>
         
         <div className={repTagListClass} id="rep-tag-browse-list">
-          <h4>Race and Ethnicity Representation Tags</h4>
+          <div>
+            <h4>Race and Ethnic Identity</h4>
             {createBrowseList(repTags, "typeOfTag", 1, "repTag")}
+          </div>
 
-          <h4>Gender and Orientation Representation Tags</h4>
+          <div>
+            <h4>Orientation and Gender Identity</h4>
             {createBrowseList(repTags, "typeOfTag", 2, "repTag")}
+          </div>
 
-          <h4>Disability Representation Tags</h4>
+          <div>
+            <h4>Disability</h4>
             {createBrowseList(repTags, "typeOfTag", 3, "repTag")}
+          </div>
 
-          <h4>Neurodivergence Representation Tags</h4>
+          <div>
+            <h4>Neurodivergence and Mental Health</h4>
             {createBrowseList(repTags, "typeOfTag", 4, "repTag")}
+          </div>
 
-          <h4>Mental Health Representation Tags</h4>
+          <div>
+            <h4>Body Positivity and Physical Form</h4>
             {createBrowseList(repTags, "typeOfTag", 5, "repTag")}
+          </div>
 
-          <h4>Body Positivity Representation Tags</h4>
+          <div>
+            <h4>Other Representation</h4>
             {createBrowseList(repTags, "typeOfTag", 6, "repTag")}
+          </div> 
         </div>
 
         <div className={authorTagListClass} id="author-tag-browse-list">
-          <h4>Race and Ethnicity Author Representation Tags</h4>
+          <div>
+            <h4>Race and Ethnic Identity</h4>
             {createBrowseList(authorTags, "typeOfTag", 1, "authorTag")}
-
-          <h4>Gender and Orientation Author Representation Tags</h4>
+          </div>
+        
+          <div>
+            <h4>Orientation and Gender Identity</h4>
             {createBrowseList(authorTags, "typeOfTag", 2, "authorTag")}
-
-          <h4>Disability Author Representation Tags</h4>
+          </div>
+          
+          <div>
+            <h4>Disability</h4>
             {createBrowseList(authorTags, "typeOfTag", 3, "authorTag")}
-
-          <h4>Neurodivergence Author Representation Tags</h4>
+          </div>
+          
+          <div>
+            <h4>Body Positivity and Physical Form</h4>
             {createBrowseList(authorTags, "typeOfTag", 4, "authorTag")}
-
-          <h4>Mental Health Author Representation Tags</h4>
+          </div>
+          
+          <div>
+            <h4>Neurodivergence and Mental Health</h4>
             {createBrowseList(authorTags, "typeOfTag", 5, "authorTag")}
-
-          <h4>Body Positivity Author Representation Tags</h4>
+          </div>
+          
+          <div>
+            <h4>Other Representation</h4>
             {createBrowseList(authorTags, "typeOfTag", 6, "authorTag")}
+          </div>
         </div>
       </section>
       
