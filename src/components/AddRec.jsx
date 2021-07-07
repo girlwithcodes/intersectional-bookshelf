@@ -810,6 +810,7 @@ function AddRec(props) {
     )
   }
 
+  //removes a tag from appropriate list of selected tags 
   const removeTag = (tagType, tagToRemove) => {
     switch(tagType) {
       case "theme":
@@ -818,6 +819,14 @@ function AddRec(props) {
       case "trigger":
         setSelectedTriggerWarnings(selectedTriggerWarnings.filter((tag)=>tag!==tagToRemove));
         break;
+      case "repTag":
+        setSelectedRepTags(selectedRepTags.filter((tag)=>tag!==tagToRemove));
+        break;
+      case "authorTag":
+        setSelectedAuthorTags(selectedAuthorTags.filter((tag)=>tag!==tagToRemove));
+        break;
+      case "genre":
+        setSelectedGenres(selectedGenres.filter((tag)=>tag!==tagToRemove));
     }
     props.setToggleFetch((curr)=>!curr);
   }
@@ -941,24 +950,29 @@ function AddRec(props) {
             <button type="button" onClick={addToTriggerWarnings}>➡️ </button>
           </section>
         </fieldset>
+
           <section id="current-tag-selections-lists">
             <h4 id="current-tags-title">Current Tag Selections</h4>
+            <p id="current-tags-instruction">Click on a tag to remove</p>
             <ul className="currently-selected-display-ul">
               <span>Genres:</span>
                 {selectedGenres.map((genre)=>(
-              <li key={genre} className="currently-selected-display-li">{genre} </li>))}
+              <li key={genre} className="currently-selected-display-li"
+                onClick={()=>removeTag("genre", genre)}>{genre} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">
               <span>Author Tags:</span>
                 {selectedAuthorTags.map((tag)=>(
-              <li key={tag} className="currently-selected-display-li">{tag} </li>))}
+              <li key={tag} className="currently-selected-display-li"
+                onClick={()=>removeTag("authorTag", tag)}>{tag} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">
               <span>Representation Tags:</span>
                 {selectedRepTags.map((tag)=>(
-              <li key={tag} className="currently-selected-display-li">{tag} </li>))}
+              <li key={tag} className="currently-selected-display-li"
+                onClick={()=>removeTag("repTag", tag)}>{tag} </li>))}
             </ul>
 
             <ul className="currently-selected-display-ul">

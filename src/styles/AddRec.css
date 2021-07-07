@@ -26,6 +26,11 @@ ul {
   margin: 0 4px;
   border:1px solid rgb(120, 222, 196);
   padding: 0 3px;
+  color: salmon;
+}
+
+.currently-selected-display-li:hover {
+  text-decoration: line-through;
 }
 
 .currently-selected-display-ul {
@@ -142,6 +147,15 @@ ul {
 
 #current-tags-title {
   text-align: center;
+  margin: 5px;
+  
+}
+
+#current-tags-instruction {
+  text-align: center;
+  font-size: 14px;
+  margin: 2px;
+  color: salmon;
 }
 
 #genre-selection-menu {
