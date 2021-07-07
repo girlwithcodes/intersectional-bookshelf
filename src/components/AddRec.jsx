@@ -73,21 +73,18 @@ function AddRec(props) {
     const fetchGenres = async() => {
       const url=`${baseURL}/genres`;
       const resp = await axios.get(url, config);
-      console.log(resp.data.records);
       setGenreList(resp.data.records);
     }
 
     const fetchRepTags = async() => {
       const url = `${baseURL}/repTags`;
       const resp = await axios.get(url, config);
-      console.log(resp.data.records);
       setRepTagList(resp.data.records);
     }
 
     const fetchAuthorTags = async() => {
       const url = `${baseURL}/authorTags`;
       const resp = await axios.get(url, config);
-      console.log(resp.data.records);
       setAuthorTagList(resp.data.records);
     }
 
@@ -138,6 +135,7 @@ function AddRec(props) {
         triggerWarnings: finalTriggerWarnings,
         recBy: recAuthor,
         reviews: [],
+        featured: "not",
       }
       const resp = await axios.post(url, { fields: newBook }, config);
       const newBookID = resp.data.id;

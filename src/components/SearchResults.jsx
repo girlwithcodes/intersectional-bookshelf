@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import '../styles/BrowseAndSearchResults.css';
 
 function SearchResults(props) {
-  const [searchObject, setSearchObject] = useState(props.searchObject);
   const bookList = props.bookList;
-  const genreSearchTerms = searchObject.genreTerms;
-  const repTagSearchTerms = searchObject.repTagTerms;
-  const authorTagSearchTerms = searchObject.authorTagTerms;
+  const genreSearchTerms = props.searchObject.genreTerms;
+  const repTagSearchTerms = props.searchObject.repTagTerms;
+  const authorTagSearchTerms = props.searchObject.authorTagTerms;
   let finalMatchList = [];
   let finalMatchObject = {};
   let genreResults;
@@ -43,8 +42,12 @@ function SearchResults(props) {
   if(repTagSearchTerms && repTagSearchTerms.length!==0) {
     repTagSearchTerms.forEach((term)=>{
       tagMatches = bookList.filter((book)=> {
-        tagsLC = book.fields.repTagList.map((tag)=>tag.toLowerCase());
-        return tagsLC.includes(term);
+        if(book.fields.repTagList && book.fields.repTagList.length!==0) {
+          tagsLC = book.fields.repTagList.map((tag)=>tag.toLowerCase());
+          return tagsLC.includes(term);
+        } else {
+          return false;
+        } 
       });
       repTagMatches = [...repTagMatches, ...tagMatches];
     })
@@ -53,8 +56,13 @@ function SearchResults(props) {
   if(authorTagSearchTerms && authorTagSearchTerms.length!==0) {
     authorTagSearchTerms.forEach((term)=>{
       tagMatches = bookList.filter((book)=> {
-        tagsLC = book.fields.authorTagList.map((tag)=>tag.toLowerCase());
-        return tagsLC.includes(term);
+        if(book.fields.authorTagList && book.fields.authorTagList.length!==0) {
+          tagsLC = book.fields.authorTagList.map((tag)=>tag.toLowerCase());
+          return tagsLC.includes(term);
+        } else {
+          return false;
+        }
+        
       });
       authorTagMatches = [...authorTagMatches, ...tagMatches];
     })
@@ -64,8 +72,16 @@ function SearchResults(props) {
 
   allMatches.forEach((match)=>{
     let bookObject = {};
-    let matchRepTagsLC = match.fields.repTagList.map((tag)=>tag.toLowerCase());
-    let matchAuthorTagsLC = match.fields.authorTagList.map((tag)=>tag.toLowerCase());
+    let matchRepTagsLC=[];
+    let matchAuthorTagsLC = [];
+
+    if(match.fields.repTagList && match.fields.repTagList.length!==0) {
+      matchRepTagsLC = match.fields.repTagList.map((tag)=>tag.toLowerCase());
+    }
+
+    if(match.fields.authorTagList && match.fields.authorTagList.length!==0) {
+      matchAuthorTagsLC = match.fields.authorTagList.map((tag)=>tag.toLowerCase());
+    }
 
     bookObject.book = match;
     
