@@ -1,0 +1,9 @@
+footer {
+  background-color: rgb(217, 255, 245);
+  margin: 5vh 0 0 0;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}

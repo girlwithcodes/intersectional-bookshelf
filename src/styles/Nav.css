@@ -1,10 +1,24 @@
+#header-and-nav {
+  display: grid;
+  grid-template-areas: 
+  "nav"
+  "pic";
+}
 #nav-bar {
+  grid-area: "nav";
   width: 100vw;
-  background-color: rgb(196, 244, 232);
+  background-color: rgb(217, 255, 245);
   padding: 1vh 0;
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
+
+#nav-header-section {
+  grid-area: "pic";
+  background: top/cover no-repeat url("https://images.pexels.com/photos/1319854/pexels-photo-1319854.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
+  height: 15vh;
+}
+
 #nav-link-list {
   list-style-type: none;
   display: flex;

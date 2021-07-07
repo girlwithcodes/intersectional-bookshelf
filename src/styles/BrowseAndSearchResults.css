@@ -1,22 +1,25 @@
 main {
   margin: 0;
 }
-.results-list-image {
-  width: 100px;
-}
+
 
 .book-match-div {
   display: flex;
   flex-direction: row;
   margin: 2vh 0;
   padding: 1vh 0;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(86, 182, 158);
   width: 100vw;
 }
 
 .book-matches-list {
   list-style: none;
   padding-left: 0;
+  color: rgb(86, 182, 158);
+}
+
+.book-matches-list a {
+  color: rgb(50, 147, 122);
 }
 
 
@@ -24,12 +27,21 @@ main {
   display: flex;
   flex-direction: row;
   list-style: none;
+  padding: 1vh;
 }
 
-.rep-tag-item {
+
+.results-list-image {
+  width: 100px;
+  margin: 2vh 2vw;
+}
+.results-display-tag-item{
   margin: 0 4px;
+  border: 1px solid rgb(86, 182, 158);
+  padding: 2px 4px;
+  color: salmon;
 }
 
-.author-tag-item {
-  margin: 0 4px;
+.search-results-main a {
+  text-decoration: none;
 }

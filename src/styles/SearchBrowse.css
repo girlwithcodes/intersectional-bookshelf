@@ -8,6 +8,8 @@
   border: 1px solid rgb(68, 179, 151);
   border-bottom: none;
   padding: 5px 10px;
+  color: salmon;
+
 }
 
 .browseList{
@@ -34,6 +36,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+
 }
 
 #browse-section-title {

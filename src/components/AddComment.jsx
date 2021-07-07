@@ -35,20 +35,20 @@ function AddComment(props) {
     <form id="add-comment-form" onSubmit={(e)=>submitReview(e)}>
 
       <div id="review-header">
-        <div>
+        <div className="review-header-div">
           <label htmlFor="comment-author">comment by: </label>
           <input type="text" id="comment-author" required 
           value={author} onChange={(e)=> setAuthor(e.target.value)}/>
         </div>
 
-        <div>
+        <div className="review-header-div">
           <label htmlFor="enj-rating">Enjoyment Rating</label>
           <input type="number" id="enj-rating" name="enj-rating" 
           step="0.1" min="0" max="5" value={enjoymentRating}
           onChange={(e)=>setEnjoymentRating(e.target.valueAsNumber)}/> <span>/5</span>
         </div>
 
-        <div>
+        <div className="review-header-div">
           <label htmlFor="rep-rating">Representation Rating: </label>
           <input type="number" id="rep-rating" name="enj-rating" 
           step="0.1" min="0" max="5" value={repRating}
@@ -61,7 +61,10 @@ function AddComment(props) {
         <textarea id="comment-input" rows="6" value={comment}
         onChange={(e)=>setComment(e.target.value)}/>
       </div>
-      <button type="submit">Post Review</button>
+
+      <div id="submit-review-button-div">
+        <button type="submit" id="submit-review-button">Post Review</button>
+      </div>
     </form>
   )
 }

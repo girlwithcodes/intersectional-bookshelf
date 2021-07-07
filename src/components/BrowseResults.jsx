@@ -17,7 +17,7 @@ function BrowseResults(props) {
           <ul className="book-tag-display-list">
             <span>author representation tags: </span>
             {book.fields.authorTagList.map((tag) => (
-              <li key={book.fields.authorTagList.indexOf(tag)}className="author-tag-item">
+              <li key={book.fields.authorTagList.indexOf(tag)}className="results-display-tag-item">
                 {tag} 
               </li>
             ))}
@@ -30,7 +30,7 @@ function BrowseResults(props) {
           <ul className="book-tag-display-list">
             <span>representation tags: </span>
             {book.fields.repTagList.map((tag) => (
-              <li key={book.fields.repTagList.indexOf(tag)}className="rep-tag-item">
+              <li key={book.fields.repTagList.indexOf(tag)}className="results-display-tag-item">
                 {tag} 
               </li>
             ))}
@@ -42,7 +42,7 @@ function BrowseResults(props) {
   }
 
   return (
-    <main>
+    <main className="search-results-main">
       <h2>Browse Results</h2>
       <ul className="book-matches-list">
         {bookMatches.map((book)=>(
@@ -51,12 +51,13 @@ function BrowseResults(props) {
               <div className="book-match-div">
                 <img className="results-list-image" src={book.fields.imageURL} />
                 <div className="book-result-info-div">
-                  <h6>{book.fields.title}</h6>
-                  <div>
-                    {book.fields.author}
-                    {createTagList(book, "author")}
-                  </div>
-                  {createTagList(book, "rep")}
+                  <h4>{book.fields.title}</h4>
+                  <p>by {book.fields.author}</p>
+                    <div>
+                      {createTagList(book, "author")}
+                      {createTagList(book, "rep")}
+                    </div>
+
                 </div>
               </div>
             </li>

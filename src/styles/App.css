@@ -1,1 +1,14 @@
+a {
+  text-decoration: none;
+  color: salmon;
 
+}
+
+.App {
+  font-family: 'Comfortaa', cursive;
+  color: salmon;
+}
+
+.App p { 
+  color: rgb(68, 179, 151);
+}

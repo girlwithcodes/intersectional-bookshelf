@@ -1,0 +1,48 @@
+h1 {
+  text-align: center;
+}
+
+main {
+  color: salmon;
+  width: 96vw;
+  margin: 0 auto;
+}
+
+#featured-book-wrapper {
+  border: 5px solid salmon;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+
+#featured-card-background-image {
+  vertical-align: top;
+  width: 40vw;
+}
+
+#home-page-links {
+  margin: 5vh;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.homepage-link-buttons {
+  background-color:  rgb(86, 182, 158);
+  height: 5vh;
+  width: 10vw;
+  min-width: 200px;
+  color: white;
+  margin: 1vh auto;
+  font-weight: 700;
+}
+
+
+
+
+
+

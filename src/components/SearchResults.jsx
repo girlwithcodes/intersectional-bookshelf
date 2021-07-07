@@ -101,7 +101,7 @@ function SearchResults(props) {
           <ul className="book-tag-display-list">
             <span>author representation tags: </span>
             {book.fields.authorTagList.map((tag) => (
-              <li key={book.fields.authorTagList.indexOf(tag)}className="author-tag-item">
+              <li key={book.fields.authorTagList.indexOf(tag)}className="results-display-tag-item">
                 {tag} 
               </li>
             ))}
@@ -114,7 +114,7 @@ function SearchResults(props) {
           <ul className="book-tag-display-list">
             <span>representation tags: </span>
             {book.fields.repTagList.map((tag) => (
-              <li key={book.fields.repTagList.indexOf(tag)}className="rep-tag-item">
+              <li key={book.fields.repTagList.indexOf(tag)}className="results-display-tag-item">
                 {tag} 
               </li>
             ))}
@@ -131,7 +131,7 @@ function SearchResults(props) {
   
   if((!repTagSearchTerms || repTagSearchTerms.length===0) && (!authorTagSearchTerms || authorTagSearchTerms.length===0)) {
     return (
-      <main>
+      <main className="search-results-main">
         <h2>Search Results</h2>
         <ul className="book-matches-list">
           {genreResults.map((match)=> (
@@ -140,12 +140,13 @@ function SearchResults(props) {
                 <div className="book-match-div">
                   <img className="results-list-image" src={match.fields.imageURL}/>
                   <div className="book-results-info-div">
-                    <h6>{match.fields.title}</h6>
+                    <h4>{match.fields.title}</h4>
+                    <p>by {match.fields.author}</p>
                     <div>
-                      {match.fields.author}
                       {createTagList(match, "author")}
+                      {createTagList(match, "rep")}
                     </div>
-                    {createTagList(match, "rep")}
+
                   </div>
                 </div>
               </li>

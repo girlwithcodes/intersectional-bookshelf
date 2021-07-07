@@ -43,11 +43,13 @@ ul {
 .selection-tag {
   width: 20vw;
   min-width: 200px;
+  text-align: left;
 }
+
 
 .submenus-ul {
   margin: 0;
-  padding: 2vh 0;
+  padding: 2vh 0; 
 }
 
 .tag-selection-dropdown {
