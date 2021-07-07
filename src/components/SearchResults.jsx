@@ -97,29 +97,41 @@ function SearchResults(props) {
   const createTagList = (book, typeOfTag) => {
     switch(typeOfTag) {
       case "author":
-        return (
-          <ul className="book-tag-display-list">
-            <span>author representation tags: </span>
-            {book.fields.authorTagList.map((tag) => (
-              <li key={book.fields.authorTagList.indexOf(tag)}className="results-display-tag-item">
-                {tag} 
-              </li>
-            ))}
-          </ul>
-        )
+        if(book.fields.authorTagList && book.fields.authorTagList.length!==0) {
+          return (
+            <ul className="book-tag-display-list">
+              <span>author representation tags: </span>
+              {book.fields.authorTagList.map((tag) => (
+                <li key={book.fields.authorTagList.indexOf(tag)}className="results-display-tag-item">
+                  {tag} 
+                </li>
+              ))}
+            </ul>
+          );
+        } else {
+          return (
+            <p>author representation tags: none found</p>
+          );
+        }
 
       break;
       case "rep":
-        return (
-          <ul className="book-tag-display-list">
-            <span>representation tags: </span>
-            {book.fields.repTagList.map((tag) => (
-              <li key={book.fields.repTagList.indexOf(tag)}className="results-display-tag-item">
-                {tag} 
-              </li>
-            ))}
-          </ul>
-        )
+        if(book.fields.repTagList && book.fields.repTagList.length!==0) {
+          return (
+            <ul className="book-tag-display-list">
+              <span>representation tags: </span>
+              {book.fields.repTagList.map((tag) => (
+                <li key={book.fields.repTagList.indexOf(tag)}className="results-display-tag-item">
+                  {tag} 
+                </li>
+              ))}
+            </ul>
+          );
+        } else {
+          return (
+            <p>representation tags: none found</p>
+          )
+        }
       break;
     }  
   }

@@ -8,29 +8,10 @@ main {
   margin: 0 auto;
 }
 
-#featured-book-wrapper {
-  border: 5px solid salmon;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+.cycle-featured-button {
+  font-size: 24px;
 }
 
-
-#featured-card-background-image {
-  vertical-align: top;
-  width: 40vw;
-}
-
-#home-page-links {
-  margin: 5vh;
-  font-size: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-}
 .homepage-link-buttons {
   background-color:  rgb(86, 182, 158);
   height: 5vh;
@@ -40,6 +21,48 @@ main {
   margin: 1vh auto;
   font-weight: 700;
 }
+
+#current-featured-card {
+  background-color: rgba(255, 255, 255, 0.975);
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#current-featured-cover {
+  width: 20vw;
+  margin: 2vh;
+}
+
+#featured-book-wrapper {
+  border: 5px solid salmon;
+  width: 50vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  background: center/cover no-repeat url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Disability_Pride_Flag_Ann_Magill_copyrights_waived.png/640px-Disability_Pride_Flag_Ann_Magill_copyrights_waived.png");
+}
+
+#featured-books h3 {
+  text-align: center;
+}
+#featured-book-info-div {
+  text-align: center;
+}
+
+#home-page-links {
+  margin: 5vh;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 
 
 

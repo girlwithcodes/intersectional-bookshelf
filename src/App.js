@@ -16,6 +16,8 @@ import './styles/App.css';
 function App() {
   //set state for bookList and toggleFetch
   const [bookList, setBookList] = useState([]);
+  const [featuredBooks, setFeaturedBooks] = useState([]);
+  const [currentFeatured, setCurrentFeatured] = useState([]);
   const [genreList, setGenreList] = useState([]);
   const [repTagList, setRepTagList] = useState([]);
   const [authorTagList, setAuthorTagList] = useState([]);
@@ -30,6 +32,8 @@ function App() {
       //save data
       const resp = await axios.get(url, config);
       setBookList(resp.data.records);
+      setFeaturedBooks(resp.data.records.filter((book)=>book.fields.featured==="featured"));
+      setCurrentFeatured(resp.data.records.filter((book)=>book.fields.featured==="featured")[0]);
     }
 
     const fetchGenres = async() => {
@@ -62,7 +66,7 @@ function App() {
     <div className="App">
       <Nav />
       <Route exact path="/">
-        <Home bookList={bookList} />
+        <Home featuredBooks={featuredBooks} currentFeatured={currentFeatured} setCurrentFeatured={setCurrentFeatured}/>
       </Route>
 
       <Route exact path="/browse">
