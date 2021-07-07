@@ -45,3 +45,9 @@ main {
 .search-results-main a {
   text-decoration: none;
 }
+
+@media screen and (max-width: 500px) {
+  .results-list-image {
+    height: 20vh;
+  }
+}

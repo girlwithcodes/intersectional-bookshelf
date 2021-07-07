@@ -16,7 +16,7 @@ main {
   background-color:  rgb(86, 182, 158);
   height: 5vh;
   width: 10vw;
-  min-width: 200px;
+  min-width: 150px;
   color: white;
   margin: 1vh auto;
   font-weight: 700;
@@ -63,6 +63,17 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+#purpose-statement {
+  width: 90vw;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 500px) {
+  #current-featured-card {
+    width: 80vw;
+  }
 }
 
 

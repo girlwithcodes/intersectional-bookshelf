@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+
 import { Link } from 'react-router-dom';
 import FeaturedCard from './FeaturedCard';
 import '../styles/Home.css';
 
 function Home(props) {
   
-
+  //moves to the next featured book in the featured books array or back to the first book if already at the end of the arra
   const nextFeatured = () => {
     const curIndex=props.featuredBooks.indexOf(props.currentFeatured);
     if(curIndex < props.featuredBooks.length-1) {
@@ -15,6 +15,7 @@ function Home(props) {
     }
   }
 
+  //moves to the previous book in the featued books array, or to the last book if aleady at the first book in the array
   const previousFeatured = () => {
     const curIndex=props.featuredBooks.indexOf(props.currentFeatured);
     if(curIndex > 0) {
@@ -28,7 +29,7 @@ function Home(props) {
     <main>
       <h1>The Intersectional Bookshelf</h1>
       <section id="purpose-statement">
-        <p>Hi guys! The Intersectional Bookshelf is a project and very much a work in progress.  It's intended to be for anyone who wants to diversify their reading or share their reading experience with books that have strong representation for people who are underrepresented in popular media and literature.  This project is in its infancy right now, but I will continue to develop it gradually.  In the mean time, if you've read a book that meant something special to you, made you feel seen or heard, or was really memorable for the representation it offered and you'd like to share it, please make a recommnedation :)</p>
+        <p>Hi guys! The Intersectional Bookshelf is a project and very much a work in progress.  It's intended to be for anyone who wants to diversify their reading or share their reading experience with books that have strong representation for people who are underrepresented in popular media and literature.  This project is in its infancy right now, but I will continue to develop it gradually.  In the mean time, if you've read a book that meant something special to you, made you feel seen or heard, or was really memorable for the representation it offered and you'd like to share it, please make a recommendation :)</p>
       </section>
       <section id="featured-books">
         <h3>Featured Books</h3>
