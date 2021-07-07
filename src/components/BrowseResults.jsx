@@ -5,11 +5,35 @@ function BrowseResults(props) {
   const params = useParams();
   const browseByID = params.id;
   const bookList = props.bookList;
-  console.log(params);
-  const bookMatches = params.tagType==="genre"? bookList.filter((book)=>book.fields.genres.includes(browseByID)) : params.tagType==="repTag" ? bookList.filter((book)=>book.fields.repTags.includes(browseByID)) : bookList.filter((book)=>book.fields.authorTags.includes(browseByID));
+  let bookMatches;
 
-  console.log(bookMatches);
+  if(params.tagType==="genre") {
+    bookMatches = bookList.filter((book)=> {
+      if(book.fields.genres && book.fields.genres.length!==0) {
+        return book.fields.genres.includes(browseByID);
+      } else {
+        return false;
+      }
+    });
+  } else if(params.tagType==="repTag") {
+    bookMatches = bookList.filter((book)=>{
+      if(book.fields.repTags && book.fields.repTags.length!==0) {
+        return book.fields.repTags.includes(browseByID);
+      } else {
+        return false;
+      }
+    });
+  } else {
+    bookMatches = bookList.filter((book)=>{
+      if(book.fields.authorTags && book.fields.authorTags.length!==0) {
+        return book.fields.authorTags.includes(browseByID);
+      } else {
+        return false;
+      }
+    });
+  }
 
+  
   const createTagList = (book, typeOfTag) => {
     switch(typeOfTag) {
       case "author":

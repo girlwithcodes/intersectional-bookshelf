@@ -9,7 +9,6 @@ import { list } from 'postcss';
 function BookDetail(props) {
   const [book, setBook] = useState({});
   const [reviews, setReviews] = useState([]);
-  const [toggleFetch, setToggleFetch] = useState(false);
   const params = useParams();
   const bookID = params.id;
   
@@ -135,7 +134,6 @@ function BookDetail(props) {
   const listReviews = () => {
     if(book.fields.reviews && book.fields.reviews.length!==0 && reviews && reviews.length!==0){
       const reviewList = reviews.filter((review)=>book.fields.reviews.includes(review.id));
-      console.log(reviewList);
       // const reviewList = book.fields.reviews;
       return (
         <section id="ratings-reviews-section">

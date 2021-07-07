@@ -185,9 +185,7 @@ function SearchResults(props) {
     )
   } else {
     finalMatchList = Object.values(finalMatchObject);
-    console.log(finalMatchList);
     finalMatchList.sort((a, b) => b.numMatches - a.numMatches);
-    console.log(finalMatchList);
     return (
       <main>
         <h2>Search Results</h2>
